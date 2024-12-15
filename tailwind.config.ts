@@ -5,8 +5,20 @@ export default {
   theme: {
     extend: {
       colors: {
-        background: 'var(--background)',
-        foreground: 'var(--foreground)',
+        black: '#101318',
+        white: '#FFFFFF',
+
+        gray: {
+          100: '#F2F4F8',
+          300: '#CFDBEA',
+          500: '#9FACBD',
+          800: '#2D3034',
+        },
+
+        purple: {
+          100: '#6A42DB',
+          10: '#F1EDFC',
+        },
       },
       extend: {
         fontFamily: {
