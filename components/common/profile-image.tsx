@@ -11,13 +11,11 @@ interface CircleImageProps {
 // size
 // 헤더에서 20, 45, 45
 // 프로필에서 60, 80, 164
-const ProfileImage: React.FC<CircleImageProps> = ({src, alt, size = 32, inset = 1}) => {
+export default function ProfileImage({src, alt, size = 32, inset = 1}: CircleImageProps) {
   return (
     <div className="relative" style={{width: size, height: size}}>
       <Image src={src} alt={alt} width={size} height={size} className="w-full h-full object-cover rounded-full" />
       <div className="absolute inset-0 rounded-full border border-[#CFDBEA]" style={{margin: inset}} />
     </div>
   );
-};
-
-export default ProfileImage;
+}
