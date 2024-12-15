@@ -6,7 +6,7 @@ interface HeaderProps {
   children: React.ReactNode;
 }
 
-const Header: React.FC<HeaderProps> = ({children}) => {
+export default function Header({children}: HeaderProps) {
   return (
     <header className="w-[343px] h-[50px] lg:w-[704px] lg:h-[70px] xl:w-[1140px] xl:h-[70px] bg-[#101318] text-white px-[20px] lg:px-[60px] xl:px-[60px] flex justify-between items-center rounded-xl lg:rounded-2xl xl:rounded-2xl">
       <Link href="/">
@@ -15,6 +15,4 @@ const Header: React.FC<HeaderProps> = ({children}) => {
       <div>{children}</div>
     </header>
   );
-};
-
-export default Header; 
+}
