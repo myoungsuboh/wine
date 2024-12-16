@@ -40,6 +40,13 @@ export default {
           medium: '500',
           regular: '400',
         },
+        screens: {
+          // PC (1200px 이상)
+          pc: '1200px',
+          // Tablet (745px 이상 ~ 1199px 이하)
+          tablet: '745px',
+          // Mobile (375px 이상 ~ 744px 이하)
+        },
       },
     },
   },
