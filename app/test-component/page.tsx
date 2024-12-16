@@ -33,6 +33,12 @@ export default function TestComponent() {
             <Box sx={modalBoxStyle}>모달 테스트입니다.</Box>
           </Modal>
         </li>
+        <li>
+          <div className="text-lg font-semibold">
+            <p>폰트 테스트</p>
+          </div>
+          <div className="bg-gray-100 text-purple-100 text-lg font-medium">색상 테스트</div>
+        </li>
       </ul>
     </>
   );
