@@ -42,7 +42,7 @@ export default function TestComponent() {
         </li>
         <li>
           <ContentBox>
-            <div className="p-10">컨텐츠 박스 테스트입니다.</div>
+            <div className="p-10 w-full pc:w-[50rem] h-auto">컨텐츠 박스 테스트입니다.</div>
           </ContentBox>
         </li>
       </ul>
