@@ -11,11 +11,11 @@ interface ProfileImageProps {
 // size
 // 헤더에서 20, 45, 45
 // 프로필에서 60, 80, 164
-export default function ProfileImage({src, alt, size = 32, inset = 1}: ProfileImageProps) {
+export default function ProfileImage({src, size = 32, inset = 1}: ProfileImageProps) {
   return (
     <div className="relative" style={{width: size, height: size}}>
-      <Image src={src} alt={alt} width={size} height={size} className="w-full h-full object-cover rounded-full" />
-      <div className="absolute inset-0 rounded-full border border-[#CFDBEA]" style={{margin: inset}} />
+      <Image src={src} alt="프로필 이미지" width={size} height={size} className="w-full h-full object-cover rounded-full" />
+      <div className="absolute inset-0 rounded-full border border-gray-300" style={{margin: inset}} />
     </div>
   );
 } 
