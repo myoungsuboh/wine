@@ -1,7 +1,8 @@
 'use client';
 import React, {useState} from 'react';
-import {Box, Button} from '@mui/material';
+import {Box} from '@mui/material';
 import Modal from '@/components/common/modal';
+import Button from '@/components/common/Button';
 import SearchBar from '@/components/common/searchBar';
 
 const modalBoxStyle = {
@@ -35,7 +36,9 @@ export default function TestComponent() {
       <br />
       <ul>
         <li>
-          <Button onClick={handleOpenModal}>Modal Open</Button>
+          <Button style={{borderRadius: '9999px', backgroundColor: '#6A42DB'}} onClick={handleOpenModal}>
+            Modal Open
+          </Button>
           <Modal open={modalStatus} onClose={() => setModalStatus(false)}>
             <Box sx={modalBoxStyle}>모달 테스트입니다.</Box>
           </Modal>
