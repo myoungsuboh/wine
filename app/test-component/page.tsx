@@ -2,6 +2,7 @@
 import React, {useState} from 'react';
 import {Box} from '@mui/material';
 import Modal from '@/components/common/modal';
+import ContentBox from '@/components/common/ContentBox';
 import Button from '@/components/common/Button';
 import SearchBar from '@/components/common/searchBar';
 
@@ -48,6 +49,11 @@ export default function TestComponent() {
             <p>폰트 테스트</p>
           </div>
           <div className="bg-gray-100 text-purple-100 text-lg font-medium">색상 테스트</div>
+        </li>
+        <li>
+          <ContentBox>
+            <div className="p-10 w-full pc:w-[50rem] h-auto">컨텐츠 박스 테스트입니다.</div>
+          </ContentBox>
         </li>
         <li className="w-[37.5rem] m-[1.25rem]">
           <SearchBar placeholder="와인을 검색해보세요" onSearch={handleSearch} />
