@@ -1,5 +1,15 @@
 import type {Config} from 'tailwindcss';
 
+const pxToRem = (px: number, base = 16) => `${px / base}rem`;
+
+const range = (start: number, end: number): number[] => {
+  const arr: number[] = [];
+  for (let i = start; i <= end; i++) {
+    arr.push(i);
+  }
+  return arr;
+};
+
 export default {
   content: ['./pages/**/*.{js,ts,jsx,tsx,mdx}', './components/**/*.{js,ts,jsx,tsx,mdx}', './app/**/*.{js,ts,jsx,tsx,mdx}'],
   theme: {
@@ -38,6 +48,17 @@ export default {
         semibold: '600',
         medium: '500',
         regular: '400',
+      },
+      spacing: {
+        // 기존 spacing 값에 pxr 단위 추가
+        ...range(1, 100).reduce(
+          (acc, px) => {
+            acc[`${px}pxr`] = pxToRem(px); // 1pxr은 rem으로 변환
+            return acc;
+          },
+          {} as Record<string, string>,
+        ),
+        '0pxr': '0rem',
       },
     },
   },
