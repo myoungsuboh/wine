@@ -5,6 +5,7 @@ import Modal from '@/components/common/modal';
 import ContentBox from '@/components/common/ContentBox';
 import Button from '@/components/common/Button';
 import SearchBar from '@/components/common/searchBar';
+import StarRating from '@/components/common/starRating';
 
 const modalBoxStyle = {
   position: 'absolute',
@@ -58,6 +59,25 @@ export default function TestComponent() {
         <li className="w-[37.5rem] m-[1.25rem]">
           <SearchBar placeholder="와인을 검색해보세요" onSearch={handleSearch} />
           <p>검색어: {searchResult}</p>
+        </li>
+        <li>
+          <StarRating
+            value={4.5}
+            text="Sentinel Carbernet Sauvignon 2016"
+            layout="column"
+            starSize="24px"
+            containerClassName="w-[120px] gap-4"
+            textClassName="text-5xl"
+          />
+          <StarRating
+            value={3.3}
+            text="47개의 후기"
+            layout="row"
+            starSize="14"
+            containerClassName="gap-4"
+            textClassName="text-3xl"
+            descriptionClassName="text-xs"
+          />
         </li>
       </ul>
     </>
