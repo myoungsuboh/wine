@@ -58,7 +58,14 @@ export default {
           },
           {} as Record<string, string>,
         ),
-        '0pxr': '0rem',
+        '0pxr': '0rem', // 0pxr 추가
+      },
+      screens: {
+        // PC (1200px 이상)
+        pc: '1200px',
+        // Tablet (745px 이상 ~ 1199px 이하)
+        tablet: '745px',
+        // Mobile (375px 이상 ~ 744px 이하)
       },
     },
   },
