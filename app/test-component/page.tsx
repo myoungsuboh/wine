@@ -1,8 +1,10 @@
 'use client';
 import React, {useState} from 'react';
-import {Box, Button} from '@mui/material';
+import {Box} from '@mui/material';
 import Modal from '@/components/common/modal';
 import ContentBox from '@/components/common/ContentBox';
+import Button from '@/components/common/Button';
+import SearchBar from '@/components/common/searchBar';
 
 const modalBoxStyle = {
   position: 'absolute',
@@ -18,9 +20,15 @@ const modalBoxStyle = {
 
 export default function TestComponent() {
   const [modalStatus, setModalStatus] = useState<boolean>(false);
+  const [searchResult, setSearchResult] = useState<string>('');
 
   const handleOpenModal = () => {
     setModalStatus(true);
+  };
+
+  const handleSearch = (query: string) => {
+    console.log('검색어: ', query);
+    setSearchResult(query);
   };
 
   return (
@@ -29,7 +37,9 @@ export default function TestComponent() {
       <br />
       <ul>
         <li>
-          <Button onClick={handleOpenModal}>Modal Open</Button>
+          <Button style={{borderRadius: '9999px', backgroundColor: '#6A42DB'}} onClick={handleOpenModal}>
+            Modal Open
+          </Button>
           <Modal open={modalStatus} onClose={() => setModalStatus(false)}>
             <Box sx={modalBoxStyle}>모달 테스트입니다.</Box>
           </Modal>
@@ -44,6 +54,10 @@ export default function TestComponent() {
           <ContentBox>
             <div className="p-10 w-full pc:w-[50rem] h-auto">컨텐츠 박스 테스트입니다.</div>
           </ContentBox>
+        </li>
+        <li className="w-[37.5rem] m-[1.25rem]">
+          <SearchBar placeholder="와인을 검색해보세요" onSearch={handleSearch} />
+          <p>검색어: {searchResult}</p>
         </li>
       </ul>
     </>
