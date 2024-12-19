@@ -34,7 +34,6 @@ export default function Slider({className, style, defaultValue = 50, min = 0, ma
       }}
       min={min}
       max={max}
-    //   onChange={onChange}
       onChangeCommitted={onChange}
       {...props}
     />
