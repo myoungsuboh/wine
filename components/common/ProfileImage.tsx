@@ -16,5 +16,5 @@ export default function ProfileImage({src, size = 32, inset = 1}: ProfileImagePr
       <Image src={src} alt="프로필 이미지" width={size} height={size} className="w-full h-full object-cover rounded-full" />
       <div className="absolute inset-0 rounded-full border border-gray-300" style={{margin: inset}} />
     </div>
-  );
+  ); 
 } 
