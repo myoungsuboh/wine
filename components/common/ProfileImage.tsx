@@ -3,7 +3,6 @@ import Image from 'next/image';
 
 interface ProfileImageProps {
   src: string;
-  alt: string;
   size?: number;
   inset?: number; // 테두리가 안으로 들어간 정도
 }
