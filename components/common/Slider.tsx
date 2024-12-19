@@ -25,7 +25,7 @@ export default function Slider({className, style, defaultValue = 50, min = 0, ma
   return (
     <MaterialSlider
       className={className}
-      style={Object.assign({color: '#6A42DB'}, style)}
+      sx={Object.assign({color: '#6A42DB'}, style)}
       track={false}
       defaultValue={defaultValue}
       valueLabelDisplay="auto"
