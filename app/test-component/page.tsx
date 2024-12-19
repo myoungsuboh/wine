@@ -4,8 +4,8 @@ import {Box} from '@mui/material';
 import Modal from '@/components/common/modal';
 import ContentBox from '@/components/common/ContentBox';
 import Button from '@/components/common/Button';
-import SearchBar from '@/components/common/searchBar';
-import StarRating from '@/components/common/starRating';
+import SearchBar from '@/components/common/SearchBar';
+import StarRating from '@/components/common/StarRating';
 import Slider from '@/components/common/Slider';
 
 const modalBoxStyle = {
