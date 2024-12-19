@@ -3,7 +3,7 @@
 import React from 'react';
 import Rating from '@mui/material/Rating';
 import {Box} from '@mui/material';
-import StarIcon from './starIcon';
+import StarIcon from './StarIcon';
 
 interface StarRatingProps {
   value: number;
