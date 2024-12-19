@@ -5,6 +5,7 @@ import Modal from '@/components/common/modal';
 import ContentBox from '@/components/common/ContentBox';
 import Button from '@/components/common/Button';
 import SearchBar from '@/components/common/searchBar';
+import Slider from '@/components/common/Slider';
 
 const modalBoxStyle = {
   position: 'absolute',
@@ -29,6 +30,10 @@ export default function TestComponent() {
   const handleSearch = (query: string) => {
     console.log('검색어: ', query);
     setSearchResult(query);
+  };
+
+  const handleSliderChange = (e: React.SyntheticEvent | Event, value: number | number[]) => {
+    console.log(`slider - ${value}`);
   };
 
   return (
@@ -58,6 +63,11 @@ export default function TestComponent() {
         <li className="w-[37.5rem] m-[1.25rem]">
           <SearchBar placeholder="와인을 검색해보세요" onSearch={handleSearch} />
           <p>검색어: {searchResult}</p>
+        </li>
+        <li>
+          <Box className="w-full h-100">
+            <Slider style={{width: '30.688rem', height: '0.5rem', margin: 10}} defaultValue={50} min={0} max={100} onChange={handleSliderChange} />
+          </Box>
         </li>
       </ul>
     </>
