@@ -1,6 +1,6 @@
 import React from 'react';
 
-interface InputBoxProps {
+interface InputWithLabelProps {
   label: string;
   value: string;
   onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
@@ -12,7 +12,7 @@ interface InputBoxProps {
   inputClassName?: string;
 }
 
-export default function InputBox({
+export default function InputWithLabel({
   label,
   value,
   onChange,
@@ -22,7 +22,7 @@ export default function InputBox({
   error,
   wrapperClassName = '',
   inputClassName = '',
-}: InputBoxProps) {
+}: InputWithLabelProps) {
   return (
     <div className={`flex flex-col ${wrapperClassName}`}>
       <label className="text-lg font-medium">{label}</label>
