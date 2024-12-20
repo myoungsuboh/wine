@@ -7,7 +7,7 @@ import Button from '@/components/common/Button';
 import SearchBar from '@/components/common/SearchBar';
 import StarRating from '@/components/common/StarRating';
 import Slider from '@/components/common/Slider';
-import InputBox from '@/components/common/InputBox';
+import InputWithLabel from '@/components/common/InputWithLabel';
 
 const modalBoxStyle = {
   position: 'absolute',
@@ -105,7 +105,7 @@ export default function TestComponent() {
           </Box>
         </li>
         <li>
-          <InputBox
+          <InputWithLabel
             label="이메일"
             value={inputValue}
             onChange={handleInputChange}
