@@ -1,8 +1,7 @@
 'use client';
 
 import {useState} from 'react';
-// import Image from 'next/image';
-import Search from './search';
+import Search from './Search';
 
 interface SearchBarProps {
   placeholder?: string;
