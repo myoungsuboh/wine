@@ -7,13 +7,14 @@ interface ModalType {
   style?: object;
   variant?: 'text' | 'contained' | 'outlined';
   size?: 'small' | 'medium' | 'large';
+  type?: 'button' | 'submit' | 'reset';
   onClick?: () => void;
   children?: React.ReactNode;
 }
 
-export default function Button({className, style, variant, size, children, onClick, ...props}: ModalType) {
+export default function Button({className, style, variant, size, type = 'button', children, onClick, ...props}: ModalType) {
   return (
-    <MaterialButton className={className} sx={style} variant={variant || 'contained'} size={size || 'small'} onClick={onClick} {...props}>
+    <MaterialButton className={className} sx={style} variant={variant || 'contained'} size={size || 'small'} type={type} onClick={onClick} {...props}>
       {children}
     </MaterialButton>
   );
