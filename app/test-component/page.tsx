@@ -24,11 +24,16 @@ const modalBoxStyle = {
 export default function TestComponent() {
   const [modalStatus, setModalStatus] = useState<boolean>(false);
   const [searchResult, setSearchResult] = useState<string>('');
+  const [query, setQuery] = useState<string>('');
   const [inputValue, setInputValue] = useState('');
   const [emailError, setEmailError] = useState<string | undefined>('');
 
   const handleOpenModal = () => {
     setModalStatus(true);
+  };
+
+  const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setQuery(event.target.value);
   };
 
   const handleSearch = (query: string) => {
@@ -77,7 +82,7 @@ export default function TestComponent() {
           </ContentBox>
         </li>
         <li className="w-[37.5rem] m-[1.25rem]">
-          <SearchBar placeholder="와인을 검색해보세요" onSearch={handleSearch} />
+          <SearchBar value={query} onChange={handleInputChange} placeholder="와인을 검색해보세요" onSearch={handleSearch} />
           <p>검색어: {searchResult}</p>
         </li>
         <li>
