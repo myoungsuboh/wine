@@ -4,9 +4,10 @@ import {Box} from '@mui/material';
 import Modal from '@/components/common/modal';
 import ContentBox from '@/components/common/ContentBox';
 import Button from '@/components/common/Button';
-import SearchBar from '@/components/common/searchBar';
-import StarRating from '@/components/common/starRating';
+import SearchBar from '@/components/common/SearchBar';
+import StarRating from '@/components/common/StarRating';
 import Slider from '@/components/common/Slider';
+import InputWithLabel from '@/components/common/InputWithLabel';
 
 const modalBoxStyle = {
   position: 'absolute',
@@ -24,6 +25,8 @@ export default function TestComponent() {
   const [modalStatus, setModalStatus] = useState<boolean>(false);
   const [searchResult, setSearchResult] = useState<string>('');
   const [query, setQuery] = useState<string>('');
+  const [inputValue, setInputValue] = useState('');
+  const [emailError, setEmailError] = useState<string | undefined>('');
 
   const handleOpenModal = () => {
     setModalStatus(true);
@@ -40,6 +43,18 @@ export default function TestComponent() {
 
   const handleSliderChange = (e: React.SyntheticEvent | Event, value: number | number[]) => {
     console.log(`slider - ${value}`);
+  };
+
+  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setInputValue(e.target.value);
+  };
+
+  const handleBlur = () => {
+    if (!inputValue) {
+      setEmailError('이메일을 입력하세요');
+    } else {
+      setEmailError('');
+    }
   };
 
   return (
@@ -93,6 +108,19 @@ export default function TestComponent() {
           <Box className="w-full h-100">
             <Slider style={{width: '30.688rem', height: '0.5rem', margin: 10}} defaultValue={50} min={0} max={100} onChange={handleSliderChange} />
           </Box>
+        </li>
+        <li>
+          <InputWithLabel
+            label="이메일"
+            value={inputValue}
+            onChange={handleInputChange}
+            onBlur={handleBlur}
+            placeholder="이메일 입력"
+            type="email"
+            error={emailError}
+            wrapperClassName="gap-10pxr"
+            inputClassName="h-[42px] tablet:h-[48px] w-[303px] tablet:w-[400px]"
+          />
         </li>
       </ul>
     </>
