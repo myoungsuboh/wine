@@ -7,6 +7,9 @@ import Button from '@/components/common/Button';
 import ContentBox from '@/components/common/ContentBox';
 import Image from 'next/image';
 import Link from 'next/link';
+import {signUp} from '@/service/api';
+import {AxiosError} from 'axios';
+import {useAuthStore} from '@/service/authStore';
 
 interface SignupFormInputs {
   email: string;
@@ -23,8 +26,30 @@ export default function Signup() {
     formState: {errors},
   } = useForm<SignupFormInputs>({mode: 'onBlur'});
 
-  const onSubmit: SubmitHandler<SignupFormInputs> = data => {
-    console.log('Signup Data:', data);
+  const {setTokens, setUser} = useAuthStore();
+
+  const onSubmit: SubmitHandler<SignupFormInputs> = async data => {
+    try {
+      const payload = {
+        email: data.email,
+        nickname: data.nickname,
+        password: data.password,
+        passwordConfirmation: data.confirmPassword,
+      };
+      console.log('Request payload:', payload);
+
+      const result = await signUp(payload);
+      console.log('회원가입 성공:', result);
+
+      setTokens(result.accessToken, result.refreshToken);
+      setUser(result.user);
+    } catch (error) {
+      if (error instanceof AxiosError) {
+        console.error('회원가입 실패:', error.response?.data || error.message);
+      } else {
+        console.error('Unexpected error:', error);
+      }
+    }
   };
 
   const password = watch('password');
