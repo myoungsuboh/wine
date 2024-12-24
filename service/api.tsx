@@ -39,8 +39,14 @@ export const get = async (endpoint: string) => {
   return response.data;
 };
 
-// POST 회원가입
+// POST 회원가입 (/auth/signUp)
 export const signUp = async (data: {email: string; nickname: string; password: string; passwordConfirmation: string}) => {
   const response = await apiClient.post('/auth/signUp', data);
+  return response.data;
+};
+
+// POST 로그인 (/auth/signIn)
+export const signIn = async (data: {email: string; password: string}) => {
+  const response = await apiClient.post('/auth/signIn', data);
   return response.data;
 };

@@ -7,6 +7,8 @@ import Button from '@/components/common/Button';
 import ContentBox from '@/components/common/ContentBox';
 import Image from 'next/image';
 import Link from 'next/link';
+import {signIn} from '@/service/api';
+import {useAuthStore} from '@/service/authStore';
 
 interface LoginFormInputs {
   email: string;
@@ -19,9 +21,20 @@ export default function Login() {
     handleSubmit,
     formState: {errors},
   } = useForm<LoginFormInputs>({mode: 'onBlur'});
+  const {setTokens, setUser} = useAuthStore();
 
-  const onSubmit: SubmitHandler<LoginFormInputs> = data => {
-    console.log('Login Data:', data);
+  const onSubmit: SubmitHandler<LoginFormInputs> = async data => {
+    try {
+      console.log('로그인 요청 데이터:', data);
+      const result = await signIn(data);
+
+      setTokens(result.accessToken, result.refreshToken);
+      setUser(result.user);
+
+      console.log('로그인 성공:', result);
+    } catch (error) {
+      console.error('로그인 실패:', error);
+    }
   };
 
   return (
