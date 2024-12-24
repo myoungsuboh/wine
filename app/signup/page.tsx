@@ -1,6 +1,6 @@
 'use client';
 
-import React from 'react';
+import React, {useEffect} from 'react';
 import {useForm, SubmitHandler} from 'react-hook-form';
 import InputWithLabel from '@/components/common/InputWithLabel';
 import Button from '@/components/common/Button';
@@ -10,6 +10,7 @@ import Link from 'next/link';
 import {signUp} from '@/service/api';
 import {AxiosError} from 'axios';
 import {useAuthStore} from '@/service/authStore';
+import {useRouter} from 'next/navigation';
 
 interface SignupFormInputs {
   email: string;
@@ -26,7 +27,14 @@ export default function Signup() {
     formState: {errors},
   } = useForm<SignupFormInputs>({mode: 'onBlur'});
 
-  const {setTokens, setUser} = useAuthStore();
+  const {setTokens, setUser, user} = useAuthStore();
+  const router = useRouter();
+
+  useEffect(() => {
+    if (user) {
+      router.push('/');
+    }
+  }, [user, router]);
 
   const onSubmit: SubmitHandler<SignupFormInputs> = async data => {
     try {
@@ -43,6 +51,8 @@ export default function Signup() {
 
       setTokens(result.accessToken, result.refreshToken);
       setUser(result.user);
+
+      router.push('/');
     } catch (error) {
       if (error instanceof AxiosError) {
         console.error('회원가입 실패:', error.response?.data || error.message);
