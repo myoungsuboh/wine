@@ -1,7 +1,7 @@
 'use client';
 import React, {useState} from 'react';
 import {Box} from '@mui/material';
-import Modal from '@/components/common/modal';
+import Modal from '@/components/common/Modal';
 import ContentBox from '@/components/common/ContentBox';
 import Button from '@/components/common/Button';
 import SearchBar from '@/components/common/SearchBar';
@@ -32,7 +32,7 @@ export default function TestComponent() {
     setModalStatus(true);
   };
 
-  const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+  const handleSearchInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setQuery(event.target.value);
   };
 
@@ -82,7 +82,7 @@ export default function TestComponent() {
           </ContentBox>
         </li>
         <li className="w-[37.5rem] m-[1.25rem]">
-          <SearchBar value={query} onChange={handleInputChange} placeholder="와인을 검색해보세요" onSearch={handleSearch} />
+          <SearchBar value={query} onChange={handleSearchInputChange} placeholder="와인을 검색해보세요" onSearch={handleSearch} />
           <p>검색어: {searchResult}</p>
         </li>
         <li>
