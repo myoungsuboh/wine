@@ -1,3 +1,3 @@
-export default function Myprofile() {
-  return <>Myprofile 페이지 입니다.</>;
+export default function myprofile() {
+  return <>myprofile 페이지 입니다.</>;
 }
