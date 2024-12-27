@@ -1,77 +1,77 @@
 {
   "pages": {
     "/_not-found/page": [
-      "static/chunks/webpack-23a2dc347315f1e9.js",
+      "static/chunks/webpack-e8d43606abf33687.js",
       "static/chunks/4bd1b696-7ca2760f8db741a1.js",
-      "static/chunks/517-d1459610959eed08.js",
+      "static/chunks/517-b8dd22bc31fc04fd.js",
       "static/chunks/main-app-386b992582af83f1.js",
       "static/chunks/app/_not-found/page-cf561b08769316e0.js"
     ],
     "/layout": [
-      "static/chunks/webpack-23a2dc347315f1e9.js",
+      "static/chunks/webpack-e8d43606abf33687.js",
       "static/chunks/4bd1b696-7ca2760f8db741a1.js",
-      "static/chunks/517-d1459610959eed08.js",
+      "static/chunks/517-b8dd22bc31fc04fd.js",
       "static/chunks/main-app-386b992582af83f1.js",
-      "static/css/87b5cb024d89053a.css",
-      "static/chunks/app/layout-e61cc90146e7cb7e.js"
-    ],
-    "/signup/page": [
-      "static/chunks/webpack-23a2dc347315f1e9.js",
-      "static/chunks/4bd1b696-7ca2760f8db741a1.js",
-      "static/chunks/517-d1459610959eed08.js",
-      "static/chunks/main-app-386b992582af83f1.js",
-      "static/chunks/912-c95643023977e015.js",
-      "static/chunks/262-890b57e4207a3ca8.js",
-      "static/chunks/592-224410efa3083dc8.js",
-      "static/chunks/app/signup/page-7ae6f1f6c5a4269b.js"
+      "static/css/c80e9e52764cbb98.css",
+      "static/chunks/app/layout-9b864e1ed3274d1a.js"
     ],
     "/login/page": [
-      "static/chunks/webpack-23a2dc347315f1e9.js",
+      "static/chunks/webpack-e8d43606abf33687.js",
       "static/chunks/4bd1b696-7ca2760f8db741a1.js",
-      "static/chunks/517-d1459610959eed08.js",
+      "static/chunks/517-b8dd22bc31fc04fd.js",
       "static/chunks/main-app-386b992582af83f1.js",
-      "static/chunks/912-c95643023977e015.js",
-      "static/chunks/262-890b57e4207a3ca8.js",
+      "static/chunks/912-bdd03e7c67780de5.js",
+      "static/chunks/262-d1a6870f009784c9.js",
       "static/chunks/592-224410efa3083dc8.js",
       "static/chunks/app/login/page-e9a2de15c0f29b22.js"
     ],
-    "/test-component/page": [
-      "static/chunks/webpack-23a2dc347315f1e9.js",
+    "/signup/page": [
+      "static/chunks/webpack-e8d43606abf33687.js",
       "static/chunks/4bd1b696-7ca2760f8db741a1.js",
-      "static/chunks/517-d1459610959eed08.js",
+      "static/chunks/517-b8dd22bc31fc04fd.js",
       "static/chunks/main-app-386b992582af83f1.js",
-      "static/chunks/912-c95643023977e015.js",
+      "static/chunks/912-bdd03e7c67780de5.js",
+      "static/chunks/262-d1a6870f009784c9.js",
+      "static/chunks/592-224410efa3083dc8.js",
+      "static/chunks/app/signup/page-7ae6f1f6c5a4269b.js"
+    ],
+    "/test-component/page": [
+      "static/chunks/webpack-e8d43606abf33687.js",
+      "static/chunks/4bd1b696-7ca2760f8db741a1.js",
+      "static/chunks/517-b8dd22bc31fc04fd.js",
+      "static/chunks/main-app-386b992582af83f1.js",
+      "static/chunks/912-bdd03e7c67780de5.js",
       "static/chunks/960-029e2d8d4c23ebf1.js",
       "static/chunks/app/test-component/page-4c313bdce2533b7e.js"
     ],
     "/(main)/layout": [
-      "static/chunks/webpack-23a2dc347315f1e9.js",
+      "static/chunks/webpack-e8d43606abf33687.js",
       "static/chunks/4bd1b696-7ca2760f8db741a1.js",
-      "static/chunks/517-d1459610959eed08.js",
+      "static/chunks/517-b8dd22bc31fc04fd.js",
       "static/chunks/main-app-386b992582af83f1.js",
-      "static/chunks/262-890b57e4207a3ca8.js",
+      "static/chunks/262-d1a6870f009784c9.js",
       "static/chunks/app/(main)/layout-deca7ac6184ecdcd.js"
     ],
     "/(main)/myprofile/page": [
-      "static/chunks/webpack-23a2dc347315f1e9.js",
+      "static/chunks/webpack-e8d43606abf33687.js",
       "static/chunks/4bd1b696-7ca2760f8db741a1.js",
-      "static/chunks/517-d1459610959eed08.js",
+      "static/chunks/517-b8dd22bc31fc04fd.js",
       "static/chunks/main-app-386b992582af83f1.js",
       "static/chunks/app/(main)/myprofile/page-35d9ade69a5fd884.js"
     ],
-    "/(main)/wines/page": [
-      "static/chunks/webpack-23a2dc347315f1e9.js",
-      "static/chunks/4bd1b696-7ca2760f8db741a1.js",
-      "static/chunks/517-d1459610959eed08.js",
-      "static/chunks/main-app-386b992582af83f1.js",
-      "static/chunks/app/(main)/wines/page-540e764426d5b435.js"
-    ],
     "/(main)/page": [
-      "static/chunks/webpack-23a2dc347315f1e9.js",
+      "static/chunks/webpack-e8d43606abf33687.js",
       "static/chunks/4bd1b696-7ca2760f8db741a1.js",
-      "static/chunks/517-d1459610959eed08.js",
+      "static/chunks/517-b8dd22bc31fc04fd.js",
       "static/chunks/main-app-386b992582af83f1.js",
       "static/chunks/app/(main)/page-b2364deb5df7ceea.js"
+    ],
+    "/(main)/wines/page": [
+      "static/chunks/webpack-e8d43606abf33687.js",
+      "static/chunks/4bd1b696-7ca2760f8db741a1.js",
+      "static/chunks/517-b8dd22bc31fc04fd.js",
+      "static/chunks/main-app-386b992582af83f1.js",
+      "static/chunks/app/(main)/wines/page-540e764426d5b435.js"
     ]
   }
 }
