@@ -10,6 +10,7 @@ import Link from 'next/link';
 import {signIn} from '@/service/api';
 import {useAuthStore} from '@/service/authStore';
 import {useRouter} from 'next/navigation';
+import KakaoLoginButton from '@/components/common/KakaoLoginButton';
 
 interface LoginFormInputs {
   email: string;
@@ -86,10 +87,7 @@ export default function Login() {
             로그인
           </Button>
         </form>
-        <Button className="mt-15pxr rounded-[12px] tablet:rounded-[16px] border border-gray-300 font-sans font-medium text-lg text-gray-800 normal-case w-full flex flex-row justify-center items-center py-14pxr gap-[10px] bg-white">
-          <Image src="/kakao.svg" alt="카카오톡 아이콘" width={24} height={24} />
-          kakao로 시작하기
-        </Button>
+        <KakaoLoginButton />
         <div className="flex flex-row justify-center mt-24pxr tablet:mt-32pxr gap-[8px] tablet:gap-[14px]  text-[14px] tablet:text-[16px]">
           <p className="text-gray-500 font-regular">계정이 없으신가요?</p>
           <Link href="/signup" className="text-purple-100 font-medium underline">
