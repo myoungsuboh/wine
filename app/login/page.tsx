@@ -80,38 +80,13 @@ export default function Login() {
             error={errors.password?.message}
           />
           <Button
-            className="mt-40pxr tablet:mt-56pxr rounded-[12px] tablet:rounded-[16px] font-sans font-bold text-lg text-white"
-            style={{
-              height: '50px',
-              width: '100%',
-              display: 'flex',
-              flexDirection: 'row',
-              justifyContent: 'center',
-              alignItems: 'center',
-              padding: '16px 0',
-              background: '#6A42DB',
-            }}
-            variant="text"
+            className="mt-40pxr tablet:mt-56pxr rounded-[12px] tablet:rounded-[16px] font-sans font-bold text-lg text-white w-full flex justify-center items-center py-16pxr bg-purple-100"
             type="submit"
           >
             로그인
           </Button>
         </form>
-        <Button
-          className="mt-15pxr rounded-[12px] tablet:rounded-[16px] border border-gray-300 font-sans font-medium text-lg text-gray-800 normal-case"
-          style={{
-            height: '50px',
-            width: '100%',
-            display: 'flex',
-            flexDirection: 'row',
-            justifyContent: 'center',
-            alignItems: 'center',
-            padding: '14px 0',
-            gap: '10px',
-            background: '#FFFFFF',
-          }}
-          variant="outlined"
-        >
+        <Button className="mt-15pxr rounded-[12px] tablet:rounded-[16px] border border-gray-300 font-sans font-medium text-lg text-gray-800 normal-case w-full flex flex-row justify-center items-center py-14pxr gap-[10px] bg-white">
           <Image src="/kakao.svg" alt="카카오톡 아이콘" width={24} height={24} />
           kakao로 시작하기
         </Button>
