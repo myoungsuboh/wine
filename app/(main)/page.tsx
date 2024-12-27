@@ -7,6 +7,7 @@ import sectionImage3 from '@/public/section3.png';
 import sectionImage1Mobile from '@/public/section1_m.png';
 import sectionImage2Mobile from '@/public/section2_m.png';
 import sectionImage3Mobile from '@/public/seciton3_m.png';
+import Link from 'next/link';
 
 export default function Home() {
   return (
@@ -23,6 +24,12 @@ export default function Home() {
         <Image src={sectionImage3Mobile} alt="section3" className="tablet:hidden" />
         <Image src={sectionImage3} alt="section3" className="hidden tablet:block" />
       </div>
+      <Link
+        href="wines"
+        className="flex justify-center items-center my-64pxr tablet:my-80pxr pc:my-[104px] py-16pxr px-96pxr gap-[10px] bg-purple-100 rounded-full text-lg font-bold text-white"
+      >
+        와인 보러가기
+      </Link>
     </div>
   );
 }
