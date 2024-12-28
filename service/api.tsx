@@ -88,3 +88,40 @@ export const signIn = async (data: {email: string; password: string}) => {
   const response = await apiClient.post('/auth/signIn', data);
   return response.data;
 };
+
+// POST 간편 로그인 (/auth/signIn/{provider})
+export const kakaoLogin = async (authCode: string) => {
+  const state = btoa(new Date().toISOString());
+
+  try {
+    const response = await apiClient.post('/auth/signIn/KAKAO', {
+      state: state,
+      token: authCode,
+      redirectUri: 'http://localhost:3000/oauth/kakao',
+    });
+    return response.data;
+  } catch (error) {
+    console.error('카카오 로그인 실패:', error);
+    throw error;
+  }
+};
+
+// PATCH 프로필 업데이트
+export const updateProfile = async (data: {image?: string | null; nickname: string}) => {
+  const response = await apiClient.patch('/users/me', data);
+  return response.data;
+};
+
+// POST 이미지 업로드 (images/upload)
+export const uploadImage = async (imageFile: File) => {
+  const formData = new FormData();
+  formData.append('image', imageFile);
+
+  const response = await apiClient.post('/images/upload', formData, {
+    headers: {
+      'Content-Type': 'multipart/form-data',
+    },
+  });
+
+  return response.data.url;
+};
