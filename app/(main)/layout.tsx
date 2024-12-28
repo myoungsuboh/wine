@@ -13,7 +13,7 @@ export default function MainLayout({children}: {children: React.ReactNode}) {
   const isLandingPage = pathname === '/';
 
   return (
-    <div className="p-16pxr tablet:pt-24pxr tablet:px-20pxr bg-gray-100">
+    <div className={`p-16pxr tablet:pt-24pxr tablet:px-20pxr ${isLandingPage ? 'bg-gray-100' : ''}`}>
       <Header>
         {isLandingPage ? (
           isLogin ? (

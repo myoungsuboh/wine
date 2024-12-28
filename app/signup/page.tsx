@@ -137,7 +137,7 @@ export default function Signup() {
             error={errors.confirmPassword?.message}
           />
           <Button
-            className="mt-40pxr tablet:mt-32pxr rounded-[12px] tablet:rounded-[16px] font-sans font-bold text-lg text-white w-full flex flex-row justify-center items-center py-16pxr bg-purple-100"
+            className="mt-40pxr tablet:mt-32pxr rounded-[12px] tablet:rounded-[16px] font-sans font-bold text-lg text-white w-full h-48pxr tablet:h-50pxr flex flex-row justify-center items-center py-16pxr bg-purple-100"
             type="submit"
           >
             가입하기

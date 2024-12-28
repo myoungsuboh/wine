@@ -28,7 +28,11 @@ export default function Login() {
 
   useEffect(() => {
     if (user) {
-      router.push('/');
+      if (user.email.endsWith('@KAKAO.com') && user.nickname === user.email.split('@')[0]) {
+        router.push('/set-profile');
+      } else {
+        router.push('/');
+      }
     }
   }, [user, router]);
 
@@ -81,7 +85,7 @@ export default function Login() {
             error={errors.password?.message}
           />
           <Button
-            className="mt-40pxr tablet:mt-56pxr rounded-[12px] tablet:rounded-[16px] font-sans font-bold text-lg text-white w-full flex justify-center items-center py-16pxr bg-purple-100"
+            className="mt-40pxr tablet:mt-56pxr rounded-[12px] tablet:rounded-[16px] font-sans font-bold text-lg text-white w-full h-48pxr tablet:h-50pxr flex justify-center items-center py-16pxr bg-purple-100"
             type="submit"
           >
             로그인
