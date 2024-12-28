@@ -1,14 +1,10 @@
-'use client';
-
 import React from 'react';
-import {Box, Card, CardContent, CardMedia, Typography, Grid, Button} from '@mui/material';
-import {ArrowBack, ArrowForward} from '@mui/icons-material';
-import {useState} from 'react';
+import Image from 'next/image';
 
 interface Wine {
   id: number;
   name: string;
-  rating: number;
+  avgRating?: number;
   image: string;
 }
 
@@ -17,7 +13,7 @@ interface WineSliderProps {
 }
 
 const WineSlider: React.FC<WineSliderProps> = ({wines}) => {
-  const [currentIndex, setCurrentIndex] = useState(0);
+  const [currentIndex, setCurrentIndex] = React.useState(0);
 
   const handlePrev = () => {
     setCurrentIndex(prevIndex => (prevIndex === 0 ? wines.length - 1 : prevIndex - 1));
@@ -28,52 +24,48 @@ const WineSlider: React.FC<WineSliderProps> = ({wines}) => {
   };
 
   return (
-    <Box position="relative" width="100%" overflow="hidden">
-      {/* 슬라이더 컨트롤 */}
-      <Button
+    <div className="relative w-full overflow-hidden bg-gray-50 rounded-lg p-4 shadow-md">
+      {/* 이전 버튼 */}
+      <button
         onClick={handlePrev}
-        variant="contained"
-        color="primary"
-        sx={{position: 'absolute', top: '50%', left: '10px', zIndex: 1, transform: 'translateY(-50%)'}}
+        className="absolute top-1/2 left-4 transform -translate-y-1/2 bg-purple-600 text-white rounded-full p-2 shadow-md z-10"
       >
-        <ArrowBack />
-      </Button>
-      <Button
+        &lt;
+      </button>
+
+      {/* 다음 버튼 */}
+      <button
         onClick={handleNext}
-        variant="contained"
-        color="primary"
-        sx={{position: 'absolute', top: '50%', right: '10px', zIndex: 1, transform: 'translateY(-50%)'}}
+        className="absolute top-1/2 right-4 transform -translate-y-1/2 bg-purple-600 text-white rounded-full p-2 shadow-md z-10"
       >
-        <ArrowForward />
-      </Button>
+        &gt;
+      </button>
 
       {/* 슬라이더 콘텐츠 */}
-      <Grid
-        container
-        spacing={2}
-        sx={{
+      <div
+        className="flex transition-transform duration-500"
+        style={{
           transform: `translateX(-${currentIndex * 100}%)`,
-          transition: 'transform 0.5s ease',
           width: `${wines.length * 100}%`,
         }}
       >
         {wines.map(wine => (
-          <Grid item xs={12} sm={6} md={4} lg={3} key={wine.id} sx={{flexShrink: 0}}>
-            <Card sx={{maxWidth: 300, margin: 'auto'}}>
-              <CardMedia component="img" height="200" image={wine.image} alt={wine.name} />
-              <CardContent>
-                <Typography variant="h6" component="div" gutterBottom>
-                  {wine.name}
-                </Typography>
-                <Typography variant="body2" color="text.secondary">
-                  ⭐ {wine.rating.toFixed(1)}
-                </Typography>
-              </CardContent>
-            </Card>
-          </Grid>
+          <div key={wine.id} className="flex-shrink-0 w-[232px] h-[185px]mx-auto p-4">
+            <div className="bg-white shadow-md rounded-lg overflow-hidden w-[228px]">
+              {/* 이미지 */}
+              <div className="relative w-full h-[200px]">
+                <Image src={wine.image} alt={wine.name} layout="fill" objectFit="cover" className="rounded-t-lg" />
+              </div>
+              {/* 텍스트 콘텐츠 */}
+              <div className="p-2 text-center">
+                <h3 className="font-semibold text-sm">{wine.name}</h3>
+                <p className="text-gray-600 text-sm">⭐ {wine.avgRating !== undefined ? wine.avgRating.toFixed(1) : 'N/A'}</p>
+              </div>
+            </div>
+          </div>
         ))}
-      </Grid>
-    </Box>
+      </div>
+    </div>
   );
 };
 

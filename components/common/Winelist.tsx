@@ -7,7 +7,7 @@ interface Wine {
   region: string;
   country: string;
   price: number;
-  rating: number;
+  rating?: number;
   image: string;
   description: string;
 }
@@ -18,20 +18,25 @@ interface WineListProps {
 
 const WineList: React.FC<WineListProps> = ({wines}) => {
   return (
-    <div className="flex-grow">
+    <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
       {wines.map(wine => (
-        <div key={wine.id} className="flex flex-col md:flex-row bg-white shadow-md rounded-lg p-4 mb-4">
-          <div className="relative w-full md:w-1/3 aspect-w-3 aspect-h-4">
-            <Image src={wine.image} alt={wine.name} layout="fill" objectFit="cover" className="rounded-md" priority={wine.id === 1} />
+        <div
+          key={wine.id}
+          className="flex flex-col lg:flex-row items-center bg-white shadow-lg rounded-xl p-6 hover:shadow-xl transition-shadow duration-300"
+        >
+          {/* 와인 이미지 */}
+          <div className="relative w-full lg:w-1/4 h-[200px] mb-4 lg:mb-0 lg:mr-6">
+            <Image src={wine.image} alt={wine.name} layout="fill" objectFit="cover" className="rounded-lg" priority={wine.id === 1} />
           </div>
-          <div className="p-4">
-            <h3 className="font-semibold text-xl">{wine.name}</h3>
-            <p className="text-gray-600">
+          {/* 와인 정보 */}
+          <div className="flex-grow">
+            <h3 className="font-semibold text-lg lg:text-xl mb-2">{wine.name}</h3>
+            <p className="text-sm lg:text-base text-gray-600 mb-2">
               {wine.region}, {wine.country}
             </p>
-            <p className="text-gray-900 font-bold">₩{wine.price.toLocaleString()}</p>
-            <p className="text-yellow-500 font-semibold">⭐ {wine.rating.toFixed(1)}</p>
-            <p className="text-gray-600">{wine.description}</p>
+            <p className="text-lg lg:text-xl text-purple-700 font-bold mb-2">₩{wine.price.toLocaleString()}</p>
+            <p className="text-sm lg:text-base text-yellow-500 font-medium mb-2">⭐ {wine.rating !== undefined ? wine.rating.toFixed(1) : 'N/A'}</p>
+            <p className="text-sm lg:text-base text-gray-500">{wine.description}</p>
           </div>
         </div>
       ))}
