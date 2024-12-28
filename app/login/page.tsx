@@ -38,13 +38,11 @@ export default function Login() {
 
   const onSubmit: SubmitHandler<LoginFormInputs> = async data => {
     try {
-      console.log('로그인 요청 데이터:', data);
       const result = await signIn(data);
 
       setTokens(result.accessToken, result.refreshToken);
       setUser(result.user);
 
-      console.log('로그인 성공:', result);
       router.push('/');
     } catch (error) {
       console.error('로그인 실패:', error);

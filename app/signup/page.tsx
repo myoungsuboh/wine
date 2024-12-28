@@ -44,10 +44,8 @@ export default function Signup() {
         password: data.password,
         passwordConfirmation: data.confirmPassword,
       };
-      console.log('Request payload:', payload);
 
       const result = await signUp(payload);
-      console.log('회원가입 성공:', result);
 
       setTokens(result.accessToken, result.refreshToken);
       setUser(result.user);

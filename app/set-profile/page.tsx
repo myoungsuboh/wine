@@ -6,6 +6,9 @@ import ContentBox from '@/components/common/ContentBox';
 import InputWithLabel from '@/components/common/InputWithLabel';
 import {useState} from 'react';
 import Image from 'next/image';
+import {updateProfile, uploadImage} from '@/service/api';
+import {useAuthStore} from '@/service/authStore';
+import {useRouter} from 'next/navigation';
 
 interface ProfileFormInputs {
   nickname: string;
@@ -18,23 +21,51 @@ export default function SetProfile() {
     formState: {errors},
   } = useForm<ProfileFormInputs>({mode: 'onBlur'});
   const [imageUrl, setImageUrl] = useState<string | null>(null);
+  const {setUser} = useAuthStore();
+  const router = useRouter();
 
-  const handleImageUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleImageUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
+
     if (file) {
-      const reader = new FileReader();
-      reader.onload = () => {
-        setImageUrl(reader.result as string);
-      };
-      reader.readAsDataURL(file);
+      const allowedTypes = ['image/png', 'image/jpeg', 'image/jpg'];
+
+      if (!allowedTypes.includes(file.type)) {
+        alert('JPG, JPEG, PNG 파일만 업로드할 수 있습니다.');
+        return;
+      }
+
+      const maxSize = 5 * 1024 * 1024;
+      if (file.size > maxSize) {
+        alert('파일 크기는 5MB 이하로 업로드해야 합니다.');
+        return;
+      }
+
+      try {
+        // 이미지 업로드 API 호출
+        const imageUrl = await uploadImage(file);
+
+        // 업로드된 이미지 URL을 상태에 저장
+        setImageUrl(imageUrl);
+      } catch (error) {
+        console.error('이미지 업로드 실패:', error);
+      }
     }
   };
 
   const onSubmit: SubmitHandler<ProfileFormInputs> = async data => {
     try {
-      console.log('닉네임 저장 요청 데이터:', data);
-      // PATCH 요청
+      console.log('닉네임 저장 요청 데이터:', imageUrl, data);
+
+      const updateUser = await updateProfile({image: imageUrl, nickname: data.nickname});
+
+      setUser({
+        nickname: updateUser.nickname,
+        image: updateUser.image,
+      });
+
       console.log('프로필이 성공적으로 저장되었습니다.');
+      router.push('/');
     } catch (error) {
       console.error('프로필 저장 실패:', error);
     }
@@ -50,11 +81,25 @@ export default function SetProfile() {
             <label htmlFor="imageUpload" className="cursor-pointer inline-block relative">
               <div className="w-[160px] h-[160px] rounded-full border-1 border-gray-300 flex items-center justify-center overflow-hidden relative group">
                 {imageUrl ? (
-                  <Image src={imageUrl} alt="업로드한 이미지" width="160" height="160" className="object-cover" />
+                  <Image src={imageUrl} alt="업로드한 이미지" width="160" height="160" layout="intrinsic" className="object-cover" />
                 ) : (
                   <>
-                    <Image src="/profile.svg" alt="기본 이미지" width="160" height="160" className="object-cover group-hover:hidden" />
-                    <Image src="/profile-hover.svg" alt="호버 이미지" width="160" height="160" className="object-cover hidden group-hover:block" />
+                    <Image
+                      src="/profile.svg"
+                      alt="기본 이미지"
+                      width="160"
+                      height="160"
+                      layout="intrinsic"
+                      className="object-cover group-hover:hidden"
+                    />
+                    <Image
+                      src="/profile-hover.svg"
+                      alt="호버 이미지"
+                      width="160"
+                      height="160"
+                      layout="intrinsic"
+                      className="object-cover hidden group-hover:block"
+                    />
                   </>
                 )}
               </div>

@@ -7,7 +7,7 @@ import {usePathname} from 'next/navigation';
 import Link from 'next/link';
 
 export default function MainLayout({children}: {children: React.ReactNode}) {
-  const {isLogin} = useAuthStore();
+  const {isLogin, user} = useAuthStore();
   const pathname = usePathname();
 
   const isLandingPage = pathname === '/';
@@ -17,7 +17,7 @@ export default function MainLayout({children}: {children: React.ReactNode}) {
       <Header>
         {isLandingPage ? (
           isLogin ? (
-            <ProfileImage src="/default-profile.svg" />
+            <ProfileImage src={user?.image || '/default-profile.svg'} />
           ) : (
             <div className="flex gap-2">
               <Link href="/login">
@@ -29,7 +29,7 @@ export default function MainLayout({children}: {children: React.ReactNode}) {
             </div>
           )
         ) : isLogin ? (
-          <ProfileImage src="/default-profile.svg" />
+          <ProfileImage src={user?.image || '/default-profile.svg'} />
         ) : (
           <div className="flex gap-2">
             <Link href="/login">

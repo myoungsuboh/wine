@@ -105,3 +105,23 @@ export const kakaoLogin = async (authCode: string) => {
     throw error;
   }
 };
+
+// PATCH 프로필 업데이트
+export const updateProfile = async (data: {image?: string | null; nickname: string}) => {
+  const response = await apiClient.patch('/users/me', data);
+  return response.data;
+};
+
+// POST 이미지 업로드 (images/upload)
+export const uploadImage = async (imageFile: File) => {
+  const formData = new FormData();
+  formData.append('image', imageFile);
+
+  const response = await apiClient.post('/images/upload', formData, {
+    headers: {
+      'Content-Type': 'multipart/form-data',
+    },
+  });
+
+  return response.data.url;
+};
