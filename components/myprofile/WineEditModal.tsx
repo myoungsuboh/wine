@@ -1,8 +1,8 @@
 'use client';
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useRef } from 'react';
 import MaterialModal from '@mui/material/Modal';
 import Image from 'next/image';
-import { patchWine } from '@/service/api';
+import { patchWine, uploadImg } from '@/service/api';
 
 interface WineEditModalProps {
   open: boolean;
@@ -14,25 +14,51 @@ interface WineEditModalProps {
 export default function WineEditModal({ open, onClose, onConfirm, winesData }: WineEditModalProps) {
   const [name, setName] = useState(winesData?.name || '');
   const [region, setRegion] = useState(winesData?.region || '');
-  const [image, setImage] = useState(winesData?.image || '');
   const [price, setPrice] = useState(winesData?.price || 0);
   const [avgRating, setAvgRating] = useState(winesData?.avgRating || 0);
   const [type, setType] = useState(winesData?.type || '');
+  const [selectedFile, setSelectedFile] = useState<File | null>(null);
+  const [previewUrl, setPreviewUrl] = useState<string>('');
+  const fileInputRef = useRef<HTMLInputElement>(null);
+
+  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    if (e.target.files && e.target.files[0]) {
+      const file = e.target.files[0];
+      setSelectedFile(file);
+      const objectUrl = URL.createObjectURL(file);
+      setPreviewUrl(objectUrl);
+    }
+  };
+
+  const handleImageClick = () => {
+    fileInputRef.current?.click();
+  };
 
   const handleSubmit = async () => {
-    const body = {
-      name: name,
-      region: region,
-      image: image,
-      price: price,
-      avgRating: avgRating,
-      type: type,
-    };
+    try {
+      let imageUrl = '';
+      
+      if (selectedFile) {
+        const uploadResponse = await uploadImg(selectedFile);
+        imageUrl = uploadResponse.url;
+      }
 
-    if (winesData?.id) {
-      await patchWine(Number(winesData.id), body);
-      onClose();
-      onConfirm();
+      const body = {
+        name: name,
+        region: region,
+        image: imageUrl,
+        price: price,
+        avgRating: avgRating,
+        type: type,
+      };
+
+      if (winesData?.id) {
+        await patchWine(Number(winesData.id), body);
+        onClose();
+        onConfirm();
+      }
+    } catch (error) {
+      console.error('Error updating wine:', error);
     }
   };
 
@@ -40,12 +66,21 @@ export default function WineEditModal({ open, onClose, onConfirm, winesData }: W
     if (winesData) {
       setName(winesData.name);
       setRegion(winesData.region);
-      setImage(winesData.image);
       setPrice(winesData.price);
       setAvgRating(winesData.avgRating);
       setType(winesData.type);
+      setSelectedFile(null);
+      setPreviewUrl('');
     }
   }, [winesData]);
+
+  useEffect(() => {
+    return () => {
+      if (previewUrl) {
+        URL.revokeObjectURL(previewUrl);
+      }
+    };
+  }, [previewUrl]);
 
   return (
     <MaterialModal
@@ -102,12 +137,36 @@ export default function WineEditModal({ open, onClose, onConfirm, winesData }: W
             </select>
 
             <label className='mb-4 text-gray-800 font-medium text-[14px] md:text-[16px]'>와인 사진</label>
-            <input
-              type='text'
-              value={image}
-              onChange={(e) => setImage(e.target.value)}
-              className='mb-8 p-2 border border-gray-300 rounded-[12px] md:rounded-[16px] outline-none'
-            />
+            <div className="mb-8">
+              <input
+                ref={fileInputRef}
+                type='file'
+                accept="image/*"
+                onChange={handleFileChange}
+                className='hidden'
+              />
+              <div 
+                onClick={handleImageClick}
+                className="w-[140px] h-[140px] bg-white border border-gray-300 rounded-[16px] cursor-pointer flex items-center justify-center overflow-hidden"
+              >
+                {previewUrl ? (
+                  <Image 
+                    src={previewUrl}
+                    alt="Wine preview"
+                    width={140}
+                    height={140}
+                    className="w-full h-full object-cover"
+                  />
+                ) : (
+                  <Image 
+                    src="/icon/icon-camera.svg"
+                    alt="Upload image"
+                    width={32}
+                    height={32}
+                  />
+                )}
+              </div>
+            </div>
           </div>
 
           <footer className="w-full flex gap-2 justify-center h-[54px] mt-auto">

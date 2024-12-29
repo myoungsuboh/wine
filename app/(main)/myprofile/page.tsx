@@ -7,8 +7,11 @@ import Reviews from "@/components/myprofile/Reviews";
 import { getUserReviews, getUserWines } from '@/service/api';
 import EmptyContent from "@/components/common/EmptyContent";
 import Wines from "@/components/myprofile/Wines";
+import { useAuthStore } from "@/service/authStore";
+
 
 export default function MyProfile() {
+  const { user } = useAuthStore();
   const router  = useRouter();
   const [userData, setUserData] = useState({
     id: '',
@@ -41,6 +44,18 @@ export default function MyProfile() {
       router.push('/login');
     }
     if (authStorage) {
+      fetchUserReviews();
+      fetchUserWines()
+    }
+  }, []);
+
+  //local storage의 유저정보가 변경되면 다시 불러옴
+  useEffect(() => {
+    const authStorage = localStorage.getItem('auth-storage');
+    if(!authStorage) {
+      router.push('/login');
+    }
+    if (authStorage) {
       const parsedData = JSON.parse(authStorage);
       setUserData({
         id: parsedData.state.user?.id || '',
@@ -48,11 +63,8 @@ export default function MyProfile() {
         nickname: parsedData.state.user?.nickname || '',
         email: parsedData.state.user?.email || ''
       });
-
-      fetchUserReviews();
-      fetchUserWines()
     }
-  }, []);
+  }, [user]);
 
   useEffect(() => {
     if (pageType === 'WINES') { 

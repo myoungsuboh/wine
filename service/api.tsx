@@ -93,6 +93,25 @@ export const signIn = async (data: {email: string; password: string}) => {
 };
 //----
 
+//---- IMAGE ----
+export const uploadImg = async (file: File) => {
+  if (file.size > 5 * 1024 * 1024) {
+    throw new Error('파일크기가 5MB를 초과합니다!');
+  }
+
+  const formData = new FormData();
+  formData.append('image', file);
+
+  const response = await apiClient.post('/images/upload', formData, {
+    headers: {
+      'Content-Type': 'multipart/form-data',
+    },
+  });
+
+  return response.data;
+};
+//----
+
 //---- USER ----
 // PATCH 사용자 정보 업데이트
 export const patchUser = async (data: { image: string; nickname: string }) => {
@@ -110,6 +129,8 @@ export const getUserWines = async (limit: number) => {
   return response.data;
 };
 //----
+
+
 
 //---- REVIEW ----
 // PATCH  리뷰 수정
