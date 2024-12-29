@@ -13,6 +13,7 @@ interface ProfileProps {
 }
 
 export default function Profile({userData}:ProfileProps) {
+  const defImgSrc = 'https://sprint-fe-project.s3.ap-northeast-2.amazonaws.com/Wine/user/543/1735460535719/skeleton-user.png';
   const [inputValue, setInputValue] = useState<string>('');
   const [selectedFile, setSelectedFile] = useState<File | null>(null);
   const [isFileSelected, setIsFileSelected] = useState(false);
@@ -40,7 +41,7 @@ export default function Profile({userData}:ProfileProps) {
         imageUrl = uploadResponse.url;
       }
       const response = await patchUser({ 
-        image: imageUrl, 
+        image: imageUrl.includes('http') ? imageUrl : defImgSrc, 
         nickname: inputValue || userData.nickname 
       });
 
