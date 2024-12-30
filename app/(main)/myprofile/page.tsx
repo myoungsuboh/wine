@@ -1,23 +1,22 @@
-"use client";
-import { useState, useEffect } from "react";
-import Profile from "@/components/myprofile/Profile";
-import PageLayout from "@/components/common/PageLayout";
-import { useRouter } from "next/navigation";
-import Reviews from "@/components/myprofile/Reviews";
-import { getUserReviews, getUserWines } from '@/service/api';
-import EmptyContent from "@/components/common/EmptyContent";
-import Wines from "@/components/myprofile/Wines";
-import { useAuthStore } from "@/service/authStore";
-
+'use client';
+import {useState, useEffect} from 'react';
+import Profile from '@/components/myprofile/Profile';
+import PageLayout from '@/components/common/PageLayout';
+import {useRouter} from 'next/navigation';
+import Reviews from '@/components/myprofile/Reviews';
+import {getUserReviews, getUserWines} from '@/service/api';
+import EmptyContent from '@/components/common/EmptyContent';
+import Wines from '@/components/myprofile/Wines';
+import {useAuthStore} from '@/service/authStore';
 
 export default function MyProfile() {
-  const { user } = useAuthStore();
-  const router  = useRouter();
+  const {user} = useAuthStore();
+  const router = useRouter();
   const [userData, setUserData] = useState({
     id: '',
     image: '',
     nickname: '',
-    email: ''
+    email: '',
   });
   const [pageType, setPageType] = useState('REVIEWS'); //REVIEWS or WINES
   const [totalCount, setTotalCount] = useState(0);
@@ -25,34 +24,34 @@ export default function MyProfile() {
   const [winesData, setWinesData] = useState([]);
 
   const fetchUserReviews = () => {
-    getUserReviews(10).then((data) => {
+    getUserReviews(10).then(data => {
       setTotalCount(data.totalCount);
       setReviewsData(data.list);
     });
-  }
+  };
 
   const fetchUserWines = () => {
-    getUserWines(10).then((data) => {
+    getUserWines(10).then(data => {
       setTotalCount(data.totalCount);
       setWinesData(data.list);
     });
-  }
+  };
 
   useEffect(() => {
     const authStorage = localStorage.getItem('auth-storage');
-    if(!authStorage) {
+    if (!authStorage) {
       router.push('/login');
     }
     if (authStorage) {
       fetchUserReviews();
-      fetchUserWines()
+      fetchUserWines();
     }
-  }, []);
+  }, [router]);
 
   //local storage의 유저정보가 변경되면 다시 불러옴
   useEffect(() => {
     const authStorage = localStorage.getItem('auth-storage');
-    if(!authStorage) {
+    if (!authStorage) {
       router.push('/login');
     }
     if (authStorage) {
@@ -61,14 +60,14 @@ export default function MyProfile() {
         id: parsedData.state.user?.id || '',
         image: parsedData.state.user?.image || '/default-profile.svg',
         nickname: parsedData.state.user?.nickname || '',
-        email: parsedData.state.user?.email || ''
+        email: parsedData.state.user?.email || '',
       });
     }
-  }, [user]);
+  }, [user, router]);
 
   useEffect(() => {
-    if (pageType === 'WINES') { 
-      fetchUserWines(); 
+    if (pageType === 'WINES') {
+      fetchUserWines();
     }
   }, [pageType]);
 
@@ -105,12 +104,10 @@ export default function MyProfile() {
               ) : (
                 <EmptyContent content="내가 쓴 후기가" />
               )
+            ) : winesData.length > 0 ? (
+              <Wines fetchWines={fetchUserWines} winesData={winesData} />
             ) : (
-              winesData.length > 0 ? (
-                <Wines fetchWines={fetchUserWines} winesData={winesData} />
-              ) : (
-                <EmptyContent content="내가 등록한 와인이" />
-              )
+              <EmptyContent content="내가 등록한 와인이" />
             )}
           </div>
         </div>

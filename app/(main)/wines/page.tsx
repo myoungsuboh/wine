@@ -1,6 +1,6 @@
 'use client';
 
-import React, {useState, useEffect} from 'react';
+import React, {useState, useEffect, useCallback} from 'react';
 import {fetchWines} from '@/service/wineservice';
 import WineFilter from '@/components/common/Winefilter';
 import WineList from '@/components/common/Winelist';
@@ -22,22 +22,28 @@ interface Wine {
   image: string;
 }
 
+interface Filters {
+  wineType: WineType;
+  priceRange: [number, number];
+  rating: string;
+}
+
 const Page: React.FC = () => {
   const [wineList, setWineList] = useState<Wine[]>([]);
   const [filteredWineList, setFilteredWineList] = useState<Wine[]>([]);
   const [recommendedWines, setRecommendedWines] = useState<Wine[]>([]);
-  const [filters, setFilters] = useState({
-    wineType: 'Red' as WineType,
-    priceRange: [0, 74000] as [number, number],
+  const [filters, setFilters] = useState<Filters>({
+    wineType: 'RED' as WineType, // 기본값을 'Red'로 설정
+    priceRange: [0, 74000],
     rating: '전체',
   });
   const [searchQuery, setSearchQuery] = useState<string>('');
   const [showRegisterModal, setShowRegisterModal] = useState<boolean>(false);
 
-  const fetchData = async () => {
+  const fetchData = useCallback(async () => {
     try {
       const wines = await fetchWines(10, {
-        type: filters.wineType,
+        type: filters.wineType ?? 'Red',
         minPrice: filters.priceRange[0],
         maxPrice: filters.priceRange[1],
         rating: filters.rating === '전체' ? undefined : parseFloat(filters.rating.split(' - ')[1]),
@@ -49,19 +55,19 @@ const Page: React.FC = () => {
       console.error('Error fetching wine data:', error);
       alert('데이터를 가져오는 중 문제가 발생했습니다. 다시 시도해주세요.');
     }
-  };
+  }, [filters]);
 
   useEffect(() => {
     fetchData();
-  }, [filters]);
+  }, [fetchData]);
 
   useEffect(() => {
     const filtered = wineList.filter(wine => wine.name.toLowerCase().includes(searchQuery.toLowerCase()));
     setFilteredWineList(filtered);
   }, [searchQuery, wineList]);
 
-  const handleFilterChange = (newFilters: {wineType: WineType; priceRange: [number, number]; rating: string}) => {
-    setFilters(newFilters);
+  const handleFilterChange = (newFilters: Filters) => {
+    setFilters(newFilters); // Filters 타입으로 전달
   };
 
   const handleSearch = (query: string) => {
@@ -120,4 +126,3 @@ const Page: React.FC = () => {
 };
 
 export default Page;
-

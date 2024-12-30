@@ -1,7 +1,7 @@
 import axios from 'axios';
 import {useAuthStore} from '@/service/authStore';
 
-type WineType = 'RED' | 'WHITE' | 'SPARKLING';
+type WineType = 'Red' | 'White' | 'Sparkling';
 
 // 와인 목록 조회 함수
 export const fetchWines = async (limit: number = 10, filters?: {type?: WineType; minPrice?: number; maxPrice?: number; rating?: number}) => {
@@ -29,8 +29,12 @@ export const fetchWines = async (limit: number = 10, filters?: {type?: WineType;
     });
 
     return response.data.list; // 반환된 와인 데이터 목록
-  } catch (error: any) {
-    console.error('Error fetching wines:', error.response || error.message);
+  } catch (error) {
+    if (error instanceof Error) {
+      console.error('Error fetching wines:', error.message);
+    } else {
+      console.error('Unexpected error:', error);
+    }
     throw error;
   }
 };
@@ -59,8 +63,12 @@ export const uploadImage = async (image: File): Promise<string> => {
     });
 
     return response.data.url; // 업로드된 이미지 URL 반환
-  } catch (error: any) {
-    console.error('Error uploading image:', error.response || error.message);
+  } catch (error) {
+    if (error instanceof Error) {
+      console.error('Error uploading image:', error.message);
+    } else {
+      console.error('Unexpected error:', error);
+    }
     throw new Error('이미지 업로드 실패');
   }
 };
@@ -99,17 +107,19 @@ export const registerWine = async (data: {name: string; region: string; image: F
     );
 
     console.log('Wine registered successfully:', response.data);
-  } catch (error: any) {
-    console.error('Error registering wine:', error.response || error.message);
-
-    if (error.response?.status === 401) {
-      alert('인증 오류: 로그인 정보를 확인하세요.');
-    } else if (error.response?.status === 400) {
-      alert('요청 오류: 데이터를 확인하세요.');
+  } catch (error) {
+    if (error instanceof Error) {
+      console.error('Error registering wine:', error.message);
+      if (error.message.includes('401')) {
+        alert('인증 오류: 로그인 정보를 확인하세요.');
+      } else if (error.message.includes('400')) {
+        alert('요청 오류: 데이터를 확인하세요.');
+      } else {
+        alert('서버 오류가 발생했습니다. 잠시 후 다시 시도해주세요.');
+      }
     } else {
-      alert('서버 오류가 발생했습니다. 잠시 후 다시 시도해주세요.');
+      console.error('Unexpected error:', error);
     }
-
     throw error;
   }
 };
