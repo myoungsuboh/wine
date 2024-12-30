@@ -36,14 +36,18 @@ export default function Wines({ fetchWines, winesData }: WinesProps) {
     setIsDeleteModalOpen(true);
   };
 
-  const handleConfirmDelete = () => {
-    if(!selectedWineId) return;
-    //TODO: status 에러 핸들링
-    deleteWine(Number(selectedWineId));
-    setIsDeleteModalOpen(false);
-    setOpenDropDownId(null);
-    setSelectedWineId(null);
-    fetchWines()
+  const handleConfirmDelete = async () => {
+    if (!selectedWineId) return;
+    
+    try {
+      await deleteWine(Number(selectedWineId));
+      setIsDeleteModalOpen(false);
+      setOpenDropDownId(null);
+      setSelectedWineId(null);
+      await fetchWines();
+    } catch (error) {
+      console.error('Error deleting wine:', error);
+    }
   };
 
   const handleDropDown = (id: string) => {
@@ -64,7 +68,7 @@ export default function Wines({ fetchWines, winesData }: WinesProps) {
             <div className=" relative w-[150px] h-[150px] overflow-hidden rounded-md">
               {/* TODO: 이미지를 피그마의 의도대로 보여주려면 더 많은 기획이 필요 */}
               <Image
-                src={wine.image}
+                src={wine.image.includes('http') ? wine.image : 'skeleton/skeleton-wine.svg'}
                 alt='wine'
                 fill
                 style={{ objectFit: 'cover', objectPosition: 'center' }}
