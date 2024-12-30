@@ -4,7 +4,7 @@ import React, {useState, useEffect} from 'react';
 import WineFilter from '@/components/common/Winefilter';
 import WineList from '@/components/common/Winelist';
 import WineSlider from '@/components/common/wineslider';
-import SearchBar from '@/components/common/SearchBar'; // 검색창 컴포넌트
+import SearchBar from '@/components/common/SearchBar';
 
 type WineType = 'Red' | 'White' | 'Sparkling';
 
@@ -52,14 +52,20 @@ const Page: React.FC = () => {
   useEffect(() => {
     const fetchWineData = async () => {
       try {
-        const response = await fetch('/api/wines');
+        const response = await fetch('https://winereview-api.vercel.app/11-1/wines?limit=10');
         if (!response.ok) {
+          const errorDetails = await response.text();
+          console.error('API Error Details:', errorDetails);
           throw new Error('Failed to fetch wine data');
         }
-        const data: Wine[] = await response.json();
-        setWineList(data);
-        setFilteredWineList(data);
-        setRecommendedWines(data.slice(0, 6));
+
+        const data = await response.json();
+        console.log('Fetched data:', data);
+
+        const wines = data.list || [];
+        setWineList(wines);
+        setFilteredWineList(wines);
+        setRecommendedWines(wines.slice(0, 6));
       } catch (error) {
         console.error('Error fetching wine data:', error);
       }
@@ -80,7 +86,7 @@ const Page: React.FC = () => {
   return (
     <main className="min-h-screen bg-gray-50 p-4">
       <div className="container mx-auto">
-        {/* 추천 와인 슬라이더 */}
+        {/* 추천 와인 */}
         <div className="mb-8">
           <h2 className="text-xl font-bold mb-4">이번 달 추천 와인</h2>
           <WineSlider wines={recommendedWines} />
