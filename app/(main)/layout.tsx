@@ -14,7 +14,7 @@ export default function MainLayout({children}: {children: React.ReactNode}) {
   const isLandingPage = pathname === '/';
 
   useEffect(() => {
-    if (user) {
+    if (user && user.image) {
       setDefImgSrc(user.image);
     }
   }, [user]);

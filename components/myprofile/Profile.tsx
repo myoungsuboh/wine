@@ -3,16 +3,7 @@ import { useAuthStore } from "@/service/authStore";
 import Image from "next/image";
 import { useState, useRef } from "react";
 
-interface ProfileProps {
-  userData: {
-    id: string;
-    image: string;
-    nickname: string;
-    email: string;
-  }
-}
-
-export default function Profile({userData}:ProfileProps) {
+export default function Profile() {
   const defImgSrc = 'https://sprint-fe-project.s3.ap-northeast-2.amazonaws.com/Wine/user/543/1735460535719/skeleton-user.png';
   const [inputValue, setInputValue] = useState<string>('');
   const [selectedFile, setSelectedFile] = useState<File | null>(null);
@@ -32,34 +23,36 @@ export default function Profile({userData}:ProfileProps) {
     }
   };
 
-  //image를 formdata로 보낸 후 저장주소를 받아서 nickname과 함께 patch
   const handleUserDataChange = async () => {
     try {
-      let imageUrl = userData.image;
+      let imageUrl = user?.image;
       if (selectedFile) {
         const uploadResponse = await uploadImg(selectedFile);
-        imageUrl = uploadResponse.url;
+        imageUrl = uploadResponse;
+        console.log('Uploaded image URL:', uploadResponse);
       }
+      
+      const imageToUse = String(imageUrl).includes('http') ? imageUrl : defImgSrc;
+      console.log('Image URL to be used:', imageToUse);
+      
       const response = await patchUser({ 
-        image: String(imageUrl).includes('http') ? imageUrl : defImgSrc, 
-        nickname: inputValue || userData.nickname 
+        image: imageToUse,
+        nickname: inputValue || user?.nickname || '' 
       });
 
-      if (response === 200) {
-        if (user) {
-          setUser({
-            id: user.id,
-            email: user.email,
-            image: imageUrl,
-            nickname: inputValue || userData.nickname,
-          });
-        }
-      }
+      if (response) {
+        setUser({
+          id: response.id,
+          email: response.email,
+          image: response.image,
+          nickname: response.nickname,
+        });
 
-      console.log('User updated successfully');
-      setIsFileSelected(false);
-      setSelectedFile(null);
-      setInputValue('');
+        console.log('User updated successfully');
+        setIsFileSelected(false);
+        setSelectedFile(null);
+        setInputValue('');
+      }
     } catch (error) {
       console.error('Error updating user:', error);
     }
@@ -80,7 +73,7 @@ export default function Profile({userData}:ProfileProps) {
                 </div>
               ) : (
                 <Image
-                  src={userData.image || '/default-profile.svg'}
+                  src={user?.image || '/default-profile.svg'}
                   alt="Profile"
                   fill
                   sizes="(max-width: 768px) 60px, (max-width: 1024px) 80px, 164px"
@@ -98,10 +91,10 @@ export default function Profile({userData}:ProfileProps) {
             </div>
             <div className="flex flex-col ml-4 md:ml-4 lg:ml-0 lg:mt-5 lg:text-center">
               <div className="text-lg font-bold text-gray-800 md:mt-0 lg:mt-4">
-                {userData.nickname}
+                {user?.nickname}
               </div>
               <div className="text-lg font-medium text-gray-500 mt-1 md:mt-0 lg:mt-2">
-                {userData.email}
+                {user?.email}
               </div>
             </div>
           </div>
@@ -110,7 +103,7 @@ export default function Profile({userData}:ProfileProps) {
           <div className="text-lg font-medium text-gray-800">닉네임</div>
           <div className="w-full max-w-full flex flex-col md:flex-row lg:flex-col gap-2">
             <input
-              placeholder={userData.nickname}
+              placeholder={user?.nickname}
               type="text"
               value={inputValue}
               onChange={(e) => setInputValue(e.target.value)}
