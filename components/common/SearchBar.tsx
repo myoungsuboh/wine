@@ -9,7 +9,7 @@ interface SearchBarProps extends InputHTMLAttributes<HTMLInputElement> {
 
 export default function SearchBar({onSearch, ...inputProps}: SearchBarProps) {
   const handleSearch = () => {
-    const query = String(inputProps.value || '').trim(); // value가 undefined인 경우 빈 문자열로 처리
+    const query = String(inputProps.value || '').trim();
 
     if (query) {
       onSearch(query);
@@ -28,7 +28,7 @@ export default function SearchBar({onSearch, ...inputProps}: SearchBarProps) {
       <input
         className="flex-grow text-lg font-regular placeholder:text-gray-500 focus:outline-none"
         onKeyDown={handleKeyPress}
-        onChange={inputProps.onChange}
+        onChange={inputProps.onChange} // 실시간 업데이트
         value={inputProps.value || ''}
         {...inputProps}
       />

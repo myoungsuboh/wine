@@ -1,10 +1,12 @@
 'use client';
 
 import React, {useState, useEffect} from 'react';
+import {fetchWines} from '@/service/wineservice';
 import WineFilter from '@/components/common/Winefilter';
 import WineList from '@/components/common/Winelist';
 import WineSlider from '@/components/common/wineslider';
 import SearchBar from '@/components/common/SearchBar';
+import WineRegisterModal from '@/components/common/WineRegister';
 
 type WineType = 'Red' | 'White' | 'Sparkling';
 
@@ -24,89 +26,98 @@ const Page: React.FC = () => {
   const [wineList, setWineList] = useState<Wine[]>([]);
   const [filteredWineList, setFilteredWineList] = useState<Wine[]>([]);
   const [recommendedWines, setRecommendedWines] = useState<Wine[]>([]);
+  const [filters, setFilters] = useState({
+    wineType: 'Red' as WineType,
+    priceRange: [0, 74000] as [number, number],
+    rating: '전체',
+  });
   const [searchQuery, setSearchQuery] = useState<string>('');
+  const [showRegisterModal, setShowRegisterModal] = useState<boolean>(false);
 
-  const handleFilterChange = (filters: {wineType: WineType; priceRange: [number, number]; rating: string}) => {
-    const {wineType, priceRange, rating} = filters;
+  const fetchData = async () => {
+    try {
+      const wines = await fetchWines(10, {
+        type: filters.wineType,
+        minPrice: filters.priceRange[0],
+        maxPrice: filters.priceRange[1],
+        rating: filters.rating === '전체' ? undefined : parseFloat(filters.rating.split(' - ')[1]),
+      });
+      setWineList(wines);
+      setFilteredWineList(wines);
+      setRecommendedWines(wines.slice(0, 6));
+    } catch (error) {
+      console.error('Error fetching wine data:', error);
+      alert('데이터를 가져오는 중 문제가 발생했습니다. 다시 시도해주세요.');
+    }
+  };
 
-    const filtered = wineList.filter(wine => {
-      const matchesType = wine.type === wineType;
-      const matchesPrice = wine.price >= priceRange[0] && wine.price <= priceRange[1];
-      const matchesRating =
-        rating === '전체' ||
-        (rating === '4.5 - 5.0' && wine.rating >= 4.5) ||
-        (rating === '4.5 - 4.0' && wine.rating >= 4.0 && wine.rating < 4.5) ||
-        (rating === '4.0 - 3.5' && wine.rating >= 3.5 && wine.rating < 4.0) ||
-        (rating === '3.5 - 3.0' && wine.rating >= 3.0 && wine.rating < 3.5);
+  useEffect(() => {
+    fetchData();
+  }, [filters]);
 
-      return matchesType && matchesPrice && matchesRating;
-    });
-
+  useEffect(() => {
+    const filtered = wineList.filter(wine => wine.name.toLowerCase().includes(searchQuery.toLowerCase()));
     setFilteredWineList(filtered);
+  }, [searchQuery, wineList]);
+
+  const handleFilterChange = (newFilters: {wineType: WineType; priceRange: [number, number]; rating: string}) => {
+    setFilters(newFilters);
   };
 
   const handleSearch = (query: string) => {
     setSearchQuery(query);
   };
 
-  useEffect(() => {
-    const fetchWineData = async () => {
-      try {
-        const response = await fetch('https://winereview-api.vercel.app/11-1/wines?limit=10');
-        if (!response.ok) {
-          const errorDetails = await response.text();
-          console.error('API Error Details:', errorDetails);
-          throw new Error('Failed to fetch wine data');
-        }
-
-        const data = await response.json();
-        console.log('Fetched data:', data);
-
-        const wines = data.list || [];
-        setWineList(wines);
-        setFilteredWineList(wines);
-        setRecommendedWines(wines.slice(0, 6));
-      } catch (error) {
-        console.error('Error fetching wine data:', error);
-      }
-    };
-
-    fetchWineData();
-  }, []);
-
-  useEffect(() => {
-    const filtered = wineList.filter(wine => {
-      const matchesSearch = wine.name.toLowerCase().includes(searchQuery.toLowerCase());
-      return matchesSearch;
-    });
-
-    setFilteredWineList(filtered);
-  }, [searchQuery, wineList]);
-
   return (
-    <main className="min-h-screen bg-gray-50 p-4">
-      <div className="container mx-auto">
-        {/* 추천 와인 */}
+    <main className="min-h-screen py-6">
+      <div className="container mx-auto" style={{maxWidth: '1140px'}}>
+        {/* 추천 와인 슬라이더 */}
         <div className="mb-8">
-          <h2 className="text-xl font-bold mb-4">이번 달 추천 와인</h2>
           <WineSlider wines={recommendedWines} />
         </div>
 
-        {/* 검색창 */}
-        <div className="mb-8">
-          <SearchBar value={searchQuery} onSearch={handleSearch} placeholder="와인을 검색해 보세요" />
-        </div>
+        <div className="flex gap-8">
+          {/* 필터 컴포넌트 */}
+          <aside
+            className="w-[284px] hidden lg:block sticky top-4"
+            style={{
+              maxHeight: 'calc(100vh - 4rem)',
+              overflow: 'auto',
+            }}
+          >
+            <WineFilter onFilterChange={handleFilterChange} />
+            {/* 와인 등록 모달 버튼 */}
+            <button onClick={() => setShowRegisterModal(true)} className="w-full py-3 mt-6 bg-purple-600 text-white font-bold text-sm rounded-lg">
+              와인 등록하기
+            </button>
+          </aside>
 
-        {/* 와인 필터 */}
-        <WineFilter onFilterChange={handleFilterChange} />
-
-        {/* 와인 리스트 */}
-        <div className="mt-8">
-          {filteredWineList.length > 0 ? <WineList wines={filteredWineList} /> : <p className="text-center text-gray-500">검색 결과가 없습니다.</p>}
+          {/* 와인 리스트 */}
+          <section className="flex-grow">
+            <div className="mb-8 flex justify-between items-center">
+              <SearchBar
+                value={searchQuery}
+                onSearch={handleSearch}
+                onChange={e => setSearchQuery(e.target.value)}
+                placeholder="와인을 검색해 보세요"
+              />
+            </div>
+            <div>
+              {filteredWineList.length > 0 ? (
+                <WineList wines={filteredWineList} />
+              ) : (
+                <p className="text-center text-gray-500">검색 결과가 없습니다.</p>
+              )}
+            </div>
+          </section>
         </div>
       </div>
+
+      {/* 와인 등록 모달 */}
+      {showRegisterModal && <WineRegisterModal onClose={() => setShowRegisterModal(false)} />}
     </main>
   );
 };
 
 export default Page;
+

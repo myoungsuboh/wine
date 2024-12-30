@@ -12,10 +12,10 @@ interface AuthState {
   isLogin: boolean;
   accessToken: string | null;
   refreshToken: string | null;
-  setTokens: (accessToken: string, refreshToken: string) => void; // 로그인
+  setTokens: (accessToken: string, refreshToken: string) => void;
   user: User | null;
-  setUser: (user: Partial<User>) => void; // 유저 정보
-  clearUser: () => void; // 로그아웃
+  setUser: (user: Partial<User>) => void;
+  clearUser: () => void;
 }
 
 export const useAuthStore = create<AuthState>()(
@@ -44,7 +44,7 @@ export const useAuthStore = create<AuthState>()(
         })),
     }),
     {
-      name: 'auth-storage', // localStorage에 저장될 키 이름
+      name: 'auth-storage',
       partialize: state => ({
         isLogin: state.isLogin,
         accessToken: state.accessToken,
