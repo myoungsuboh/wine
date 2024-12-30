@@ -69,7 +69,7 @@ apiClient.interceptors.response.use(
       }
     }
     // 401 외 에러 반환
-    console.error('401 외 에러:', error);
+    console.error('error', error);
     return Promise.reject(error);
   },
 );
@@ -93,10 +93,26 @@ export const signIn = async (data: {email: string; password: string}) => {
 };
 //----
 
+
 //---- IMAGE ----
 export const uploadImg = async (file: File) => {
   if (file.size > 5 * 1024 * 1024) {
     throw new Error('파일크기가 5MB를 초과합니다!');
+
+// POST 간편 로그인 (/auth/signIn/{provider})
+export const kakaoLogin = async (authCode: string) => {
+  const state = btoa(new Date().toISOString());
+
+  try {
+    const response = await apiClient.post('/auth/signIn/KAKAO', {
+      state: state,
+      token: authCode,
+      redirectUri: 'https://wine-11-1.vercel.app/oauth/kakao',
+    });
+    return response.data;
+  } catch (error) {
+    console.error('카카오 로그인 실패:', error);
+    throw error;
   }
 
   const formData = new FormData();
