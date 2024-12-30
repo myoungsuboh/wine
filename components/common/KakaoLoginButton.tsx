@@ -1,5 +1,5 @@
 'use client';
-import React, {useEffect} from 'react';
+import React, {useCallback, useEffect} from 'react';
 import Button from './Button';
 import Image from 'next/image';
 import {kakaoLogin} from '@/service/api';
@@ -18,26 +18,29 @@ export default function KakaoLoginButton() {
   };
   const router = useRouter();
 
-  const handleLogin = async (authCode: string) => {
-    try {
-      const loginData = await kakaoLogin(authCode);
-      console.log('간편로그인 성공: ', loginData);
-      setTokens(loginData.accessToken, loginData.refreshToken);
-      setUser(loginData.user);
+  const handleLogin = useCallback(
+    async (authCode: string) => {
+      try {
+        const loginData = await kakaoLogin(authCode);
+        console.log('간편로그인 성공: ', loginData);
+        setTokens(loginData.accessToken, loginData.refreshToken);
+        setUser(loginData.user);
 
-      const userEmail = loginData.user.email;
-      const defaultNickname = userEmail.split('@')[0];
+        const userEmail = loginData.user.email;
+        const defaultNickname = userEmail.split('@')[0];
 
-      if (loginData.user.email.endsWith('@KAKAO.com') && loginData.user.nickname === defaultNickname) {
-        router.push('/set-profile');
-      } else {
-        router.push('/');
+        if (loginData.user.email.endsWith('@KAKAO.com') && loginData.user.nickname === defaultNickname) {
+          router.push('/set-profile');
+        } else {
+          router.push('/');
+        }
+      } catch (error) {
+        console.error('간편로그인 실패:', error);
+        alert('로그인에 실패했습니다');
       }
-    } catch (error) {
-      console.error('간편로그인 실패:', error);
-      alert('로그인에 실패했습니다');
-    }
-  };
+    },
+    [setTokens, setUser, router],
+  );
 
   useEffect(() => {
     const handleMessage = (event: MessageEvent) => {
@@ -51,7 +54,7 @@ export default function KakaoLoginButton() {
     return () => {
       window.removeEventListener('message', handleMessage);
     };
-  }, []);
+  }, [handleLogin]);
 
   return (
     <Button
