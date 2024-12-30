@@ -77,3 +77,4 @@ const WineSlider: React.FC<WineSliderProps> = ({wines}) => {
 };
 
 export default WineSlider;
+

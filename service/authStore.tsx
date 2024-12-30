@@ -36,12 +36,12 @@ export const useAuthStore = create<AuthState>()(
         );
       },
       clearUser: () =>
-        set({
+        set(() => ({
           isLogin: false,
           accessToken: null,
           refreshToken: null,
           user: null,
-        }),
+        })),
     }),
     {
       name: 'auth-storage',
