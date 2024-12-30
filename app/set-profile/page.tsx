@@ -6,7 +6,7 @@ import ContentBox from '@/components/common/ContentBox';
 import InputWithLabel from '@/components/common/InputWithLabel';
 import {useState} from 'react';
 import Image from 'next/image';
-import {updateProfile, uploadImage} from '@/service/api';
+import {patchUser, uploadImg} from '@/service/api';
 import {useAuthStore} from '@/service/authStore';
 import {useRouter} from 'next/navigation';
 
@@ -43,7 +43,7 @@ export default function SetProfile() {
 
       try {
         // 이미지 업로드 API 호출
-        const imageUrl = await uploadImage(file);
+        const imageUrl = await uploadImg(file);
 
         // 업로드된 이미지 URL을 상태에 저장
         setImageUrl(imageUrl);
@@ -57,7 +57,7 @@ export default function SetProfile() {
     try {
       console.log('닉네임 저장 요청 데이터:', imageUrl, data);
 
-      const updateUser = await updateProfile({image: imageUrl, nickname: data.nickname});
+      const updateUser = await patchUser({image: imageUrl, nickname: data.nickname});
 
       setUser({
         nickname: updateUser.nickname,

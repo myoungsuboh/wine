@@ -20,7 +20,7 @@ const pretendard = localFont({
 });
 
 export const metadata: Metadata = {
-  title: 'WINE',
+  title: 'WINE - 한 곳에서 관리하는 나만의 와인창고',
   description: 'WINE',
 };
 

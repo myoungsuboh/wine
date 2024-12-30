@@ -1,10 +1,7 @@
 import axios from 'axios';
 import {useAuthStore} from './authStore';
 
-// const baseURL = process.env.NEXT_PUBLIC_API_URL;
-
-//api주소는 env로 관리할 필요 없어서 직접 삽입
-const baseURL = 'https://winereview-api.vercel.app/11-1';
+const baseURL = process.env.NEXT_PUBLIC_API_URL;
 
 const apiClient = axios.create({
   baseURL: baseURL,
@@ -74,12 +71,6 @@ apiClient.interceptors.response.use(
   },
 );
 
-// 예시
-export const get = async (endpoint: string) => {
-  const response = await apiClient.get(endpoint);
-  return response.data;
-};
-
 //---- AUTH ----
 // POST 회원가입 (/auth/signUp)
 export const signUp = async (data: {email: string; nickname: string; password: string; passwordConfirmation: string}) => {
@@ -91,14 +82,6 @@ export const signIn = async (data: {email: string; password: string}) => {
   const response = await apiClient.post('/auth/signIn', data);
   return response.data;
 };
-//----
-
-
-//---- IMAGE ----
-export const uploadImg = async (file: File) => {
-  if (file.size > 5 * 1024 * 1024) {
-    throw new Error('파일크기가 5MB를 초과합니다!');
-
 // POST 간편 로그인 (/auth/signIn/{provider})
 export const kakaoLogin = async (authCode: string) => {
   const state = btoa(new Date().toISOString());
@@ -107,16 +90,23 @@ export const kakaoLogin = async (authCode: string) => {
     const response = await apiClient.post('/auth/signIn/KAKAO', {
       state: state,
       token: authCode,
-      redirectUri: 'https://wine-11-1.vercel.app/oauth/kakao',
+      redirectUri: 'http://localhost:3000/oauth/kakao',
     });
     return response.data;
   } catch (error) {
     console.error('카카오 로그인 실패:', error);
     throw error;
   }
+};
+//----
 
+//---- IMAGE ----
+export const uploadImg = async (imageFile: File) => {
   const formData = new FormData();
-  formData.append('image', file);
+  formData.append('image', imageFile);
+  if (imageFile.size > 5 * 1024 * 1024) {
+    throw new Error('파일크기가 5MB를 초과합니다!');
+  }
 
   const response = await apiClient.post('/images/upload', formData, {
     headers: {
@@ -124,15 +114,15 @@ export const kakaoLogin = async (authCode: string) => {
     },
   });
 
-  return response.data;
+  return response.data.url;
 };
 //----
 
 //---- USER ----
 // PATCH 사용자 정보 업데이트
-export const patchUser = async (data: { image: string; nickname: string }) => {
+export const patchUser = async (data: {image?: string | null; nickname: string}) => {
   const response = await apiClient.patch('/users/me', data);
-  return response.status;
+  return response.data;
 };
 // GET 사용자 리뷰 호출
 export const getUserReviews = async (limit: number) => {
@@ -145,8 +135,6 @@ export const getUserWines = async (limit: number) => {
   return response.data;
 };
 //----
-
-
 
 //---- REVIEW ----
 // PATCH  리뷰 수정
