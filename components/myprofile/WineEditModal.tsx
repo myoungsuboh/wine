@@ -40,7 +40,7 @@ export default function WineEditModal({ open, onClose, onConfirm, winesData }: W
       
       if (selectedFile) {
         const uploadResponse = await uploadImg(selectedFile);
-        imageUrl = uploadResponse.url;
+        imageUrl = uploadResponse;
       }
 
       const body = {
@@ -132,8 +132,9 @@ export default function WineEditModal({ open, onClose, onConfirm, winesData }: W
               className='mb-8 p-2 border border-gray-300 rounded-[12px] md:rounded-[16px] appearance-none pr-8 outline-none'
               style={{ backgroundImage: 'url(/path/to/arrow-icon.svg)', backgroundPosition: 'right 20px center', backgroundRepeat: 'no-repeat', backgroundColor: 'white', color: 'gray-300' }}
             >
-              <option value='Red'>Red</option>
-              <option value='White'>White</option>
+              <option value='RED'>Red</option>
+              <option value='WHITE'>White</option>
+              <option value='SPARKLING'>Sparkling</option>
             </select>
 
             <label className='mb-4 text-gray-800 font-medium text-[14px] md:text-[16px]'>와인 사진</label>
