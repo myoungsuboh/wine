@@ -1,5 +1,6 @@
 import React from 'react';
 import Image from 'next/image';
+import StarRating from './StarRating';
 
 interface Wine {
   id: number;
@@ -18,25 +19,27 @@ interface WineListProps {
 
 const WineList: React.FC<WineListProps> = ({wines}) => {
   return (
-    <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+    <div className="space-y-6">
       {wines.map(wine => (
-        <div
-          key={wine.id}
-          className="flex flex-col lg:flex-row items-center bg-white shadow-lg rounded-xl p-6 hover:shadow-xl transition-shadow duration-300"
-        >
-          {/* 와인 이미지 */}
-          <div className="relative w-full lg:w-1/4 h-[200px] mb-4 lg:mb-0 lg:mr-6">
-            <Image src={wine.image} alt={wine.name} layout="fill" objectFit="cover" className="rounded-lg" priority={wine.id === 1} />
+        <div key={wine.id} className="bg-white shadow-lg rounded-lg p-6 hover:shadow-xl transition-shadow duration-300 border border-gray-200 w-full">
+          <div className="flex flex-col lg:flex-row items-start lg:items-center mb-4">
+            <div className="relative w-full lg:w-1/5 h-[200px] mb-4 lg:mb-0 lg:mr-6">
+              <Image src={wine.image} alt={wine.name} layout="fill" objectFit="cover" className="rounded-md" priority={wine.id === 1} />
+            </div>
+            <div className="flex-grow">
+              <div className="flex justify-between items-center mb-4">
+                <h3 className="font-bold text-lg lg:text-xl">{wine.name}</h3>
+                <StarRating value={wine.rating || 0} text="" layout="column" textClassName="text-5xl font-bold text-gray-800" starSize="24px" />
+              </div>
+              <p className="text-sm text-gray-500 mb-1">
+                {wine.region}, {wine.country}
+              </p>
+              <p className="text-lg font-bold bg-purple-400 text-purple-100 px-3 py-1 rounded-lg inline-block">₩{wine.price.toLocaleString()}</p>
+            </div>
           </div>
-          {/* 와인 정보 */}
-          <div className="flex-grow">
-            <h3 className="font-semibold text-lg lg:text-xl mb-2">{wine.name}</h3>
-            <p className="text-sm lg:text-base text-gray-600 mb-2">
-              {wine.region}, {wine.country}
-            </p>
-            <p className="text-lg lg:text-xl text-purple-700 font-bold mb-2">₩{wine.price.toLocaleString()}</p>
-            <p className="text-sm lg:text-base text-yellow-500 font-medium mb-2">⭐ {wine.rating !== undefined ? wine.rating.toFixed(1) : 'N/A'}</p>
-            <p className="text-sm lg:text-base text-gray-500">{wine.description}</p>
+          <div className="border-t border-gray-300 pt-4">
+            <p className="text-sm text-gray-400 mb-2 font-medium">최신 후기</p>
+            <p className="text-sm text-gray-600">{wine.description || '후기가 없습니다.'}</p>
           </div>
         </div>
       ))}
