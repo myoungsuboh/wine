@@ -5,16 +5,17 @@ interface User {
   id: string;
   email: string;
   nickname: string;
+  image: string | null;
 }
 
 interface AuthState {
   isLogin: boolean;
   accessToken: string | null;
   refreshToken: string | null;
-  setTokens: (accessToken: string, refreshToken: string) => void; // 로그인
+  setTokens: (accessToken: string, refreshToken: string) => void;
   user: User | null;
-  setUser: (user: User) => void; // 유저 정보
-  clearUser: () => void; // 로그아웃
+  setUser: (user: Partial<User>) => void;
+  clearUser: () => void;
 }
 
 export const useAuthStore = create<AuthState>()(
@@ -25,8 +26,14 @@ export const useAuthStore = create<AuthState>()(
       refreshToken: null,
       setTokens: (accessToken, refreshToken) => set({isLogin: true, accessToken: accessToken.trim(), refreshToken: refreshToken.trim()}),
       user: null,
-      setUser: (user: User) => {
-        set({user, isLogin: true});
+      setUser: (user: Partial<User>) => {
+        set(
+          state =>
+            ({
+              user: {...state.user, ...user},
+              isLogin: true,
+            }) as Partial<AuthState>,
+        );
       },
       clearUser: () =>
         set({
@@ -37,7 +44,7 @@ export const useAuthStore = create<AuthState>()(
         }),
     }),
     {
-      name: 'auth-storage', // localStorage에 저장될 키 이름
+      name: 'auth-storage',
       partialize: state => ({
         isLogin: state.isLogin,
         accessToken: state.accessToken,
