@@ -12,25 +12,24 @@ import { useAuthStore } from "@/service/authStore";
 export default function MyProfile() {
   const { isLogin, user } = useAuthStore();
   const router  = useRouter();
-  
   const [pageType, setPageType] = useState('REVIEWS'); //REVIEWS or WINES
   const [totalCount, setTotalCount] = useState(0);
   const [reviewsData, setReviewsData] = useState([]);
   const [winesData, setWinesData] = useState([]);
 
   const fetchUserReviews = () => {
-    getUserReviews(10).then((data) => {
+    getUserReviews(10).then(data => {
       setTotalCount(data.totalCount);
       setReviewsData(data.list);
     });
-  }
+  };
 
   const fetchUserWines = () => {
-    getUserWines(10).then((data) => {
+    getUserWines(10).then(data => {
       setTotalCount(data.totalCount);
       setWinesData(data.list);
     });
-  }
+  };
 
   console.log(user)
 
@@ -86,12 +85,10 @@ export default function MyProfile() {
               ) : (
                 <EmptyContent content="내가 쓴 후기가" />
               )
+            ) : winesData.length > 0 ? (
+              <Wines fetchWines={fetchUserWines} winesData={winesData} />
             ) : (
-              winesData.length > 0 ? (
-                <Wines fetchWines={fetchUserWines} winesData={winesData} />
-              ) : (
-                <EmptyContent content="내가 등록한 와인이" />
-              )
+              <EmptyContent content="내가 등록한 와인이" />
             )}
           </div>
         </div>
