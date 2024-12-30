@@ -1,7 +1,7 @@
 import axios from 'axios';
 import {useAuthStore} from './authStore';
 
-const baseURL = process.env.NEXT_PUBLIC_API_URL;
+const baseURL = 'https://winereview-api.vercel.app/11-1';
 
 const apiClient = axios.create({
   baseURL: baseURL,

@@ -1,5 +1,5 @@
 "use client";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useMemo } from "react";
 import Profile from "@/components/myprofile/Profile";
 import PageLayout from "@/components/common/PageLayout";
 import { useRouter } from "next/navigation";
@@ -9,16 +9,10 @@ import EmptyContent from "@/components/common/EmptyContent";
 import Wines from "@/components/myprofile/Wines";
 import { useAuthStore } from "@/service/authStore";
 
-
 export default function MyProfile() {
-  const { user } = useAuthStore();
+  const { isLogin, user } = useAuthStore();
   const router  = useRouter();
-  const [userData, setUserData] = useState({
-    id: '',
-    image: '',
-    nickname: '',
-    email: ''
-  });
+  
   const [pageType, setPageType] = useState('REVIEWS'); //REVIEWS or WINES
   const [totalCount, setTotalCount] = useState(0);
   const [reviewsData, setReviewsData] = useState([]);
@@ -38,37 +32,24 @@ export default function MyProfile() {
     });
   }
 
-  useEffect(() => {
-    const authStorage = localStorage.getItem('auth-storage');
-    if(!authStorage) {
-      router.push('/login');
-    }
-    if (authStorage) {
-      fetchUserReviews();
-      fetchUserWines()
-    }
-  }, []);
-
-  //local storage의 유저정보가 변경되면 다시 불러옴
-  useEffect(() => {
-    const authStorage = localStorage.getItem('auth-storage');
-    if(!authStorage) {
-      router.push('/login');
-    }
-    if (authStorage) {
-      const parsedData = JSON.parse(authStorage);
-      setUserData({
-        id: parsedData.state.user?.id || '',
-        image: parsedData.state.user?.image || '/default-profile.svg',
-        nickname: parsedData.state.user?.nickname || '',
-        email: parsedData.state.user?.email || ''
-      });
-    }
-  }, [user]);
+  console.log(user)
 
   useEffect(() => {
-    if (pageType === 'WINES') { 
-      fetchUserWines(); 
+    const authStorage = localStorage.getItem('auth-storage');
+    const storageUserData = JSON.parse(authStorage || '{}');
+    if (!storageUserData.state?.user && isLogin === false) {
+      router.push('/login');
+    } 
+  }, [isLogin, user]);
+
+  useMemo(() => {
+    if(user) {
+      if (pageType === 'REVIEWS') {
+        fetchUserReviews();
+      }
+      if (pageType === 'WINES') {
+        fetchUserWines();
+      }
     }
   }, [pageType]);
 
@@ -77,7 +58,7 @@ export default function MyProfile() {
       <div className="mt-9">
         <div className="flex flex-col lg:flex-row w-full gap-8 md:gap-10 lg:gap-14">
           <div className="w-full lg:w-[280px] flex-shrink-0">
-            <Profile userData={userData} />
+            <Profile />
           </div>
           <div className="w-full lg:w-[800px]">
             <div className="flex flex-row justify-between items-center mb-4">

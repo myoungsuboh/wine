@@ -36,15 +36,19 @@ export default function Reviews({ fetchReviews, reviewsData }: ReviewsProps) {
     setIsDeleteModalOpen(true);
   };
 
-  const handleConfirmDelete = () => {
-    if(!selectedReviewId) return;
-    //TODO: status 에러 핸들링
-    deleteReview(Number(selectedReviewId));
-    setIsDeleteModalOpen(false);
-    setOpenDropDownId(null);
-    setSelectedReviewId(null);
-    fetchReviews()
-  };
+  const handleConfirmDelete = async () => {
+      if (!selectedReviewId) return;
+      
+      try {
+        await deleteReview(Number(selectedReviewId));
+        setIsDeleteModalOpen(false);
+        setOpenDropDownId(null);
+        setSelectedReviewId(null);
+        await fetchReviews();
+      } catch (error) {
+        console.error('Error deleting wine:', error);
+      }
+    };
 
   const handleDropDown = (id: string) => {
     setOpenDropDownId(openDropDownId === id ? null : id);
