@@ -8,7 +8,7 @@ import {useRouter} from 'next/navigation';
 
 export default function KakaoLoginButton() {
   const KAKAO_REST_API_KEY = process.env.NEXT_PUBLIC_KAKAO_REST_API_KEY;
-  const REDIRECT_URI = 'http://localhost:3000/oauth/kakao'; // 로그인 후 이동
+  const REDIRECT_URI = 'https://wine-11-1.vercel.app/oauth/kakao'; // 로그인 후 이동
 
   const {setTokens, setUser} = useAuthStore();
 

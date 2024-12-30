@@ -66,7 +66,7 @@ apiClient.interceptors.response.use(
       }
     }
     // 401 외 에러 반환
-    console.error('401 외 에러:', error);
+    console.error('error', error);
     return Promise.reject(error);
   },
 );
@@ -97,7 +97,7 @@ export const kakaoLogin = async (authCode: string) => {
     const response = await apiClient.post('/auth/signIn/KAKAO', {
       state: state,
       token: authCode,
-      redirectUri: 'http://localhost:3000/oauth/kakao',
+      redirectUri: 'https://wine-11-1.vercel.app/oauth/kakao',
     });
     return response.data;
   } catch (error) {
