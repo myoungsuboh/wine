@@ -1,5 +1,5 @@
 "use client";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useMemo } from "react";
 import Profile from "@/components/myprofile/Profile";
 import PageLayout from "@/components/common/PageLayout";
 import { useRouter } from "next/navigation";
@@ -9,9 +9,8 @@ import EmptyContent from "@/components/common/EmptyContent";
 import Wines from "@/components/myprofile/Wines";
 import { useAuthStore } from "@/service/authStore";
 
-
 export default function MyProfile() {
-  const { user } = useAuthStore();
+  const { isLogin, user } = useAuthStore();
   const router  = useRouter();
   const [userData, setUserData] = useState({
     id: '',
@@ -40,35 +39,27 @@ export default function MyProfile() {
 
   useEffect(() => {
     const authStorage = localStorage.getItem('auth-storage');
-    if(!authStorage) {
+    const storageUserData = JSON.parse(authStorage || '{}');
+    if (!storageUserData.state?.user && isLogin === false) {
       router.push('/login');
-    }
-    if (authStorage) {
-      fetchUserReviews();
-      fetchUserWines()
-    }
-  }, []);
-
-  //local storage의 유저정보가 변경되면 다시 불러옴
-  useEffect(() => {
-    const authStorage = localStorage.getItem('auth-storage');
-    if(!authStorage) {
-      router.push('/login');
-    }
-    if (authStorage) {
-      const parsedData = JSON.parse(authStorage);
+    } else if (isLogin && user) {
       setUserData({
-        id: parsedData.state.user?.id || '',
-        image: parsedData.state.user?.image || '/default-profile.svg',
-        nickname: parsedData.state.user?.nickname || '',
-        email: parsedData.state.user?.email || ''
+        id: user.id || '',
+        image: user.image || '/default-profile.svg',
+        nickname: user.nickname || '',
+        email: user.email || ''
       });
     }
-  }, [user]);
+  }, [isLogin, user]);
 
-  useEffect(() => {
-    if (pageType === 'WINES') { 
-      fetchUserWines(); 
+  useMemo(() => {
+    if(user) {
+      if (pageType === 'REVIEWS') {
+        fetchUserReviews();
+      }
+      if (pageType === 'WINES') {
+        fetchUserWines();
+      }
     }
   }, [pageType]);
 

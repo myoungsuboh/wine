@@ -41,7 +41,7 @@ export default function Profile({userData}:ProfileProps) {
         imageUrl = uploadResponse.url;
       }
       const response = await patchUser({ 
-        image: imageUrl.includes('http') ? imageUrl : defImgSrc, 
+        image: String(imageUrl).includes('http') ? imageUrl : defImgSrc, 
         nickname: inputValue || userData.nickname 
       });
 
