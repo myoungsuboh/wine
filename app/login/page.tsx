@@ -10,6 +10,7 @@ import Link from 'next/link';
 import {signIn} from '@/service/api';
 import {useAuthStore} from '@/service/authStore';
 import {useRouter} from 'next/navigation';
+import KakaoLoginButton from '@/components/common/KakaoLoginButton';
 
 interface LoginFormInputs {
   email: string;
@@ -27,19 +28,21 @@ export default function Login() {
 
   useEffect(() => {
     if (user) {
-      router.push('/');
+      if (user.email.endsWith('@KAKAO.com') && user.nickname === user.email.split('@')[0]) {
+        router.push('/set-profile');
+      } else {
+        router.push('/');
+      }
     }
   }, [user, router]);
 
   const onSubmit: SubmitHandler<LoginFormInputs> = async data => {
     try {
-      console.log('로그인 요청 데이터:', data);
       const result = await signIn(data);
 
       setTokens(result.accessToken, result.refreshToken);
       setUser(result.user);
 
-      console.log('로그인 성공:', result);
       router.push('/');
     } catch (error) {
       console.error('로그인 실패:', error);
@@ -80,41 +83,13 @@ export default function Login() {
             error={errors.password?.message}
           />
           <Button
-            className="mt-40pxr tablet:mt-56pxr rounded-[12px] tablet:rounded-[16px] font-sans font-bold text-lg text-white"
-            style={{
-              height: '50px',
-              width: '100%',
-              display: 'flex',
-              flexDirection: 'row',
-              justifyContent: 'center',
-              alignItems: 'center',
-              padding: '16px 0',
-              background: '#6A42DB',
-            }}
-            variant="text"
+            className="mt-40pxr tablet:mt-56pxr rounded-[12px] tablet:rounded-[16px] font-sans font-bold text-lg text-white w-full h-48pxr tablet:h-50pxr flex justify-center items-center py-16pxr bg-purple-100"
             type="submit"
           >
             로그인
           </Button>
         </form>
-        <Button
-          className="mt-15pxr rounded-[12px] tablet:rounded-[16px] border border-gray-300 font-sans font-medium text-lg text-gray-800 normal-case"
-          style={{
-            height: '50px',
-            width: '100%',
-            display: 'flex',
-            flexDirection: 'row',
-            justifyContent: 'center',
-            alignItems: 'center',
-            padding: '14px 0',
-            gap: '10px',
-            background: '#FFFFFF',
-          }}
-          variant="outlined"
-        >
-          <Image src="/kakao.svg" alt="카카오톡 아이콘" width={24} height={24} />
-          kakao로 시작하기
-        </Button>
+        <KakaoLoginButton />
         <div className="flex flex-row justify-center mt-24pxr tablet:mt-32pxr gap-[8px] tablet:gap-[14px]  text-[14px] tablet:text-[16px]">
           <p className="text-gray-500 font-regular">계정이 없으신가요?</p>
           <Link href="/signup" className="text-purple-100 font-medium underline">
