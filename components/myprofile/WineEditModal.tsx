@@ -40,7 +40,7 @@ export default function WineEditModal({ open, onClose, onConfirm, winesData }: W
       
       if (selectedFile) {
         const uploadResponse = await uploadImg(selectedFile);
-        imageUrl = uploadResponse.url;
+        imageUrl = uploadResponse;
       }
 
       const body = {
