@@ -25,9 +25,17 @@ export default function ProfileImage({src, size = 32, inset = 1}: ProfileImagePr
     router.push('/myprofile');
   };
   const handleLogOut = () => {
-    //TODO: 로그아웃 기능 연결
     console.log('log out');
     clearUser();
+
+    const currentPath = window.location.pathname;
+    const isRestricted = /^\/wines\/\d+$/.test(currentPath) || currentPath === '/myprofile';
+
+    if (isRestricted) {
+      router.push('/');
+    } else {
+      router.refresh();
+    }
   };
 
   const dropDownButtons = [

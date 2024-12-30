@@ -90,7 +90,7 @@ export const kakaoLogin = async (authCode: string) => {
     const response = await apiClient.post('/auth/signIn/KAKAO', {
       state: state,
       token: authCode,
-      redirectUri: 'http://localhost:3000/oauth/kakao',
+      redirectUri: 'https://wine-11-1.vercel.app/oauth/kakao',
     });
     return response.data;
   } catch (error) {
