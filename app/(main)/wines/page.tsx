@@ -7,6 +7,7 @@ import WineList from '@/components/common/Winelist';
 import WineSlider from '@/components/common/wineslider';
 import SearchBar from '@/components/common/SearchBar';
 import WineRegisterModal from '@/components/common/WineRegister';
+import {AnimatePresence, motion} from 'framer-motion';
 
 type WineType = 'Red' | 'White' | 'Sparkling';
 
@@ -33,7 +34,7 @@ const Page: React.FC = () => {
   const [filteredWineList, setFilteredWineList] = useState<Wine[]>([]);
   const [recommendedWines, setRecommendedWines] = useState<Wine[]>([]);
   const [filters, setFilters] = useState<Filters>({
-    wineType: 'RED' as WineType, // 기본값을 'Red'로 설정
+    wineType: 'Red', // 기본값을 'Red'로 설정
     priceRange: [0, 74000],
     rating: '전체',
   });
@@ -67,7 +68,7 @@ const Page: React.FC = () => {
   }, [searchQuery, wineList]);
 
   const handleFilterChange = (newFilters: Filters) => {
-    setFilters(newFilters); // Filters 타입으로 전달
+    setFilters(newFilters);
   };
 
   const handleSearch = (query: string) => {
@@ -78,7 +79,7 @@ const Page: React.FC = () => {
     <main className="min-h-screen py-6">
       <div className="container mx-auto" style={{maxWidth: '1140px'}}>
         {/* 추천 와인 슬라이더 */}
-        <div className="mb-8">
+        <div className="mb-[40px]">
           <WineSlider wines={recommendedWines} />
         </div>
 
@@ -89,6 +90,7 @@ const Page: React.FC = () => {
             style={{
               maxHeight: 'calc(100vh - 4rem)',
               overflow: 'auto',
+              marginTop: '110px', // 필터와 추천 와인의 간격 유지
             }}
           >
             <WineFilter onFilterChange={handleFilterChange} />
@@ -100,7 +102,9 @@ const Page: React.FC = () => {
 
           {/* 와인 리스트 */}
           <section className="flex-grow">
-            <div className="mb-8 flex justify-between items-center">
+            <div className="mb-[30px] flex justify-between items-center">
+              {' '}
+              {/* 간격을 좁혀서 30px로 설정 */}
               <SearchBar
                 value={searchQuery}
                 onSearch={handleSearch}
@@ -109,11 +113,15 @@ const Page: React.FC = () => {
               />
             </div>
             <div>
-              {filteredWineList.length > 0 ? (
-                <WineList wines={filteredWineList} />
-              ) : (
-                <p className="text-center text-gray-500">검색 결과가 없습니다.</p>
-              )}
+              <AnimatePresence>
+                {filteredWineList.length > 0 ? (
+                  <motion.div initial={{opacity: 0}} animate={{opacity: 1}} exit={{opacity: 0}} className="space-y-6">
+                    <WineList wines={filteredWineList} />
+                  </motion.div>
+                ) : (
+                  <p className="text-center text-gray-500">검색 결과가 없습니다.</p>
+                )}
+              </AnimatePresence>
             </div>
           </section>
         </div>

@@ -34,7 +34,7 @@ const WineList: React.FC<WineListProps> = ({wines}) => {
               <p className="text-sm text-gray-500 mb-1">
                 {wine.region}, {wine.country}
               </p>
-              <p className="text-lg font-bold bg-purple-400 text-purple-100 px-3 py-1 rounded-lg inline-block">₩{wine.price.toLocaleString()}</p>
+              <p className="text-lg font-bold bg-purple-200 text-purple-100 px-3 py-1 rounded-lg inline-block">₩{wine.price.toLocaleString()}</p>
             </div>
           </div>
           <div className="border-t border-gray-300 pt-4">
@@ -48,4 +48,3 @@ const WineList: React.FC<WineListProps> = ({wines}) => {
 };
 
 export default WineList;
-
