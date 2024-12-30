@@ -1,7 +1,10 @@
 import axios from 'axios';
 import {useAuthStore} from './authStore';
 
-const baseURL = process.env.NEXT_PUBLIC_API_URL;
+// const baseURL = process.env.NEXT_PUBLIC_API_URL;
+
+//api주소는 env로 관리할 필요 없어서 직접 삽입
+const baseURL = 'https://winereview-api.vercel.app/11-1';
 
 const apiClient = axios.create({
   baseURL: baseURL,
@@ -77,17 +80,24 @@ export const get = async (endpoint: string) => {
   return response.data;
 };
 
+//---- AUTH ----
 // POST 회원가입 (/auth/signUp)
 export const signUp = async (data: {email: string; nickname: string; password: string; passwordConfirmation: string}) => {
   const response = await apiClient.post('/auth/signUp', data);
   return response.data;
 };
-
 // POST 로그인 (/auth/signIn)
 export const signIn = async (data: {email: string; password: string}) => {
   const response = await apiClient.post('/auth/signIn', data);
   return response.data;
 };
+//----
+
+
+//---- IMAGE ----
+export const uploadImg = async (file: File) => {
+  if (file.size > 5 * 1024 * 1024) {
+    throw new Error('파일크기가 5MB를 초과합니다!');
 
 // POST 간편 로그인 (/auth/signIn/{provider})
 export const kakaoLogin = async (authCode: string) => {
@@ -104,18 +114,9 @@ export const kakaoLogin = async (authCode: string) => {
     console.error('카카오 로그인 실패:', error);
     throw error;
   }
-};
 
-// PATCH 프로필 업데이트
-export const updateProfile = async (data: {image?: string | null; nickname: string}) => {
-  const response = await apiClient.patch('/users/me', data);
-  return response.data;
-};
-
-// POST 이미지 업로드 (images/upload)
-export const uploadImage = async (imageFile: File) => {
   const formData = new FormData();
-  formData.append('image', imageFile);
+  formData.append('image', file);
 
   const response = await apiClient.post('/images/upload', formData, {
     headers: {
@@ -123,5 +124,53 @@ export const uploadImage = async (imageFile: File) => {
     },
   });
 
-  return response.data.url;
+  return response.data;
 };
+//----
+
+//---- USER ----
+// PATCH 사용자 정보 업데이트
+export const patchUser = async (data: { image: string; nickname: string }) => {
+  const response = await apiClient.patch('/users/me', data);
+  return response.status;
+};
+// GET 사용자 리뷰 호출
+export const getUserReviews = async (limit: number) => {
+  const response = await apiClient.get(`/users/me/reviews?limit=${limit}`);
+  return response.data;
+};
+// GET 사용자 와인 호출
+export const getUserWines = async (limit: number) => {
+  const response = await apiClient.get(`/users/me/wines?limit=${limit}`);
+  return response.data;
+};
+//----
+
+
+
+//---- REVIEW ----
+// PATCH  리뷰 수정
+export const patchReview = async (id: number, data: REVIEWS_DATA) => {
+  const response = await apiClient.patch(`/reviews/${id}`, data);
+  return response.status;
+};
+
+// DELETE  리뷰 삭제
+export const deleteReview = async (id: number) => {
+  const response = await apiClient.delete(`/reviews/${id}`);
+  return response.status;
+};
+//----
+
+//---- WINE ----
+// PATCH  와인 수정
+export const patchWine = async (id: number, data: WINES_DATA) => {
+  const response = await apiClient.patch(`/wines/${id}`, data);
+  return response.status;
+};
+// DELETE  와인 삭제
+export const deleteWine = async (id: number) => {
+  const response = await apiClient.delete(`/wines/${id}`);
+  return response.status;
+};
+//----
