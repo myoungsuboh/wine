@@ -1,17 +1,18 @@
-"use client";
-import { useState, useEffect, useMemo } from "react";
-import Profile from "@/components/myprofile/Profile";
-import PageLayout from "@/components/common/PageLayout";
-import { useRouter } from "next/navigation";
-import Reviews from "@/components/myprofile/Reviews";
-import { getUserReviews, getUserWines } from '@/service/api';
-import EmptyContent from "@/components/common/EmptyContent";
-import Wines from "@/components/myprofile/Wines";
-import { useAuthStore } from "@/service/authStore";
+'use client';
+import {useState, useEffect, useMemo} from 'react';
+import Profile from '@/components/myprofile/Profile';
+import PageLayout from '@/components/common/PageLayout';
+import {useRouter} from 'next/navigation';
+import Reviews from '@/components/myprofile/Reviews';
+import {getUserReviews, getUserWines} from '@/service/api';
+import EmptyContent from '@/components/common/EmptyContent';
+import Wines from '@/components/myprofile/Wines';
+import {useAuthStore} from '@/service/authStore';
 
 export default function MyProfile() {
-  const { isLogin, user } = useAuthStore();
-  const router  = useRouter();
+  const {isLogin, user} = useAuthStore();
+  const router = useRouter();
+
   const [pageType, setPageType] = useState('REVIEWS'); //REVIEWS or WINES
   const [totalCount, setTotalCount] = useState(0);
   const [reviewsData, setReviewsData] = useState([]);
@@ -31,18 +32,18 @@ export default function MyProfile() {
     });
   };
 
-  console.log(user)
+  console.log(user);
 
   useEffect(() => {
     const authStorage = localStorage.getItem('auth-storage');
     const storageUserData = JSON.parse(authStorage || '{}');
     if (!storageUserData.state?.user && isLogin === false) {
       router.push('/login');
-    } 
-  }, [isLogin, user]);
+    }
+  }, [isLogin, router]);
 
   useMemo(() => {
-    if(user) {
+    if (user) {
       if (pageType === 'REVIEWS') {
         fetchUserReviews();
       }
@@ -50,7 +51,7 @@ export default function MyProfile() {
         fetchUserWines();
       }
     }
-  }, [pageType]);
+  }, [user, pageType]);
 
   return (
     <PageLayout>

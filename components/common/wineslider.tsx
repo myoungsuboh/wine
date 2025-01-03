@@ -35,7 +35,7 @@ const WineSlider: React.FC<WineSliderProps> = ({wines}) => {
         onClick={handlePrev}
         className="absolute top-1/2 left-4 transform -translate-y-1/2 bg-white border border-gray-300 rounded-full p-3 shadow-md z-10 flex items-center justify-center w-10 h-10"
       >
-        <Image src="/slider.svg" alt="Previous" width={20} height={20} />
+        <Image src="/arrow-right.svg" alt="Previous" width={20} height={20} />
       </button>
 
       {/* 다음 버튼 */}
@@ -77,4 +77,3 @@ const WineSlider: React.FC<WineSliderProps> = ({wines}) => {
 };
 
 export default WineSlider;
-

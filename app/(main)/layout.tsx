@@ -5,7 +5,7 @@ import ProfileImage from '@/components/common/ProfileImage';
 import {useAuthStore} from '@/service/authStore';
 import {usePathname} from 'next/navigation';
 import Link from 'next/link';
-import { useEffect, useState } from 'react';
+import {useEffect, useState} from 'react';
 
 export default function MainLayout({children}: {children: React.ReactNode}) {
   const {isLogin, user} = useAuthStore();
@@ -20,7 +20,7 @@ export default function MainLayout({children}: {children: React.ReactNode}) {
   }, [user]);
 
   return (
-    <div className="p-16pxr tablet:pt-24pxr tablet:px-20pxr bg-gray-100 min-h-screen">
+    <div className={`p-16pxr tablet:pt-24pxr tablet:px-20pxr ${isLandingPage ? 'bg-gray-100' : ''}`}>
       <Header>
         {isLandingPage ? (
           isLogin ? (
@@ -36,7 +36,7 @@ export default function MainLayout({children}: {children: React.ReactNode}) {
             </div>
           )
         ) : isLogin ? (
-          <ProfileImage src={defImgSrc}  />
+          <ProfileImage src={defImgSrc} />
         ) : (
           <div className="flex gap-2">
             <Link href="/login">
